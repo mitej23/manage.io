@@ -1,0 +1,180 @@
+:root {
+  --font-family: Cairo;
+  --font-style: normal;
+  --title-font-weight: 700;
+  --title-font-size: 1.25rem;
+  --border: 1px solid #cbcbcb;
+}
+
+.side-bar {
+  height: 100vh;
+  background: #f3f5f7;
+  width: 15rem;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  position: fixed; /* Fixed Sidebar (stay in placeon scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  border-right: 1px solid #cdcdcd;
+}
+
+.logo {
+  margin-left: 10%;
+  margin-top: 50px;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 36px;
+  line-height: 59px;
+}
+
+.sm-logo {
+  display: none;
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.menu-links {
+  height: 300px;
+  width: 100%;
+  position: relative;
+  /* background: red; */
+  padding-left: 10%;
+  margin-top: 25px;
+  font-family: Cairo;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 67px;
+  color: rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+}
+
+.links > .fas {
+  margin-right: 0.6875rem;
+}
+
+.links#highlight {
+  color: #181818;
+}
+
+.links:last-of-type {
+  margin-top: auto;
+}
+
+.links#exit {
+  color: rgb(218, 77, 77);
+}
+
+.links:hover {
+  cursor: pointer;
+}
+
+.links:hover::before {
+  content: "";
+  position: absolute;
+  height: 57px;
+  margin-top: 5px;
+  width: 90%;
+  background: rgba(223, 223, 223, 0.22);
+  margin-left: -5%;
+  border-radius: 8px;
+}
+
+.links:last-of-type:hover::before {
+  background-color: rgb(238, 147, 147, 0.22);
+}
+
+#highlight::before {
+  content: "";
+  position: absolute;
+  height: 57px;
+  margin-top: 5px;
+  background: rgba(192, 192, 192, 0.22);
+  width: 90%;
+  margin-left: -5%;
+  border-radius: 8px;
+}
+
+@media all and (max-width: 1100px) {
+  .links > .fas {
+    margin-right: 0px;
+  }
+
+  .side-bar {
+    max-width: 85px;
+  }
+
+  .content {
+    width: calc(100vw - 120px);
+    margin-left: 90px;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .sm-logo {
+    display: flex;
+    font-size: 1.1rem;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 35px;
+  }
+
+  .sm-logo-text {
+    display: flex;
+    justify-content: center;
+  }
+
+  .menu-links {
+    padding-left: 0px;
+    margin-top: 40px;
+  }
+
+  .links {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
+    font-size: 14px;
+  }
+
+  .fas {
+    display: flex;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: -10px;
+  }
+
+  .links > .fas {
+    margin-right: none;
+  }
+
+  .fa-chevron-left {
+    font-size: 18px;
+  }
+
+  #highlight::before {
+    height: 75px;
+    margin-top: -10px;
+    margin-left: 0%;
+  }
+
+  .links:hover::before {
+    height: 75px;
+    margin-top: -10px;
+    margin-left: 0%;
+  }
+}

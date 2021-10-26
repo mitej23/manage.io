@@ -3,16 +3,24 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/auth.actions";
 
+//components
+import SideMenu from "../../components/SideMenu/SideMenu";
+
+//styles
+import "./dashboard.styles.css";
+
 const dashboard = ({ logoutUser }) => {
-  const onLogoutClick = (e) => {
-    e.preventDefault();
-    logoutUser();
-  };
+  // const onLogoutClick = (e) => {
+  //   e.preventDefault();
+  //   logoutUser();
+  // };
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      <button onClick={onLogoutClick}>Logout</button>
+    <div className="page">
+      <SideMenu />
+      <div className="content">
+        <h1>Dashbaord</h1>
+      </div>
     </div>
   );
 };
