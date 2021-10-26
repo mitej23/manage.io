@@ -1,9 +1,9 @@
 import React from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route,Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 //auth
-import jwt_decode from "jwt-decode";
+import jwt_decode, { JwtPayload } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./redux/actions/auth.actions";
 
@@ -12,11 +12,11 @@ import { Provider } from "react-redux";
 import store from "./redux/store";
 
 //components
-import Landing from "./pages/Landing";
+import Landing from "./pages/Landing/Landing";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
-import dashboard from './components/dashboard/dashboard'
+import dashboard from "./pages/dashboard/dashboard";
 
 // Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -24,18 +24,19 @@ if (localStorage.jwtToken) {
   const token = localStorage.jwtToken;
   setAuthToken(token);
   // Decode token and get user info and exp
-  const decoded = jwt_decode(token);
+  const decoded = jwt_decode<JwtPayload>(token);
   // Set user and isAuthenticated
   store.dispatch(setCurrentUser(decoded));
-// Check for expired token
+  // Check for expired token
   const currentTime = Date.now() / 1000; // to get in milliseconds
-  if (decoded.exp < currentTime) {
+  if ((decoded?.exp as JwtPayload) < currentTime) {
     // Logout user
     store.dispatch(logoutUser());
     // Redirect to login
     window.location.href = "./login";
   }
 }
+
 
 function App() {
   return (
