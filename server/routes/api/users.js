@@ -10,6 +10,7 @@ const validateLoginInput = require("../../validation/login");
 
 // Load user model
 const User = require("../../models/User");
+const { getUserNameFromEmail } = require("../../utils/utiltiy_functions");
 
 // @route POST api/users/register
 // @desc Register user
@@ -29,6 +30,7 @@ router.post("/register", (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
+        user_name: getUserNameFromEmail(req.body.email),
       });
       // Hash password before saving in database
       bcrypt.genSalt(10, (err, salt) => {
@@ -71,6 +73,8 @@ router.post("/login", (req, res) => {
         const payload = {
           id: user.id,
           name: user.name,
+          email: user.email,
+          user_name: user.user_name,
         };
         // Sign token
         jwt.sign(
@@ -94,6 +98,5 @@ router.post("/login", (req, res) => {
     });
   });
 });
-
 
 module.exports = router;
