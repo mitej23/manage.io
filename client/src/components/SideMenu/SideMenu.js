@@ -1,6 +1,6 @@
 import React from "react";
 import "./SideMenu.styles.css";
-
+import { useLocation, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/auth.actions";
@@ -14,21 +14,30 @@ import { BsBookmarksFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 const SideMenu = ({ logoutUser }) => {
+  const { pathname } = useLocation();
+  const history = useHistory();
+
   const onLogoutClick = (e) => {
     e.preventDefault();
     logoutUser();
   };
 
+  const backToDashboard = () => {
+    history.push("/user");
+  };
+
   return (
     <div className="side-bar">
-      <p className="logo">Manage.io</p>
-      <div className="sm-logo">
+      <p className="logo" onClick={backToDashboard}>
+        Manage.io
+      </p>
+      <div className="sm-logo" onClick={backToDashboard}>
         <p className="sm-logo-text">Manage</p>
         <p className="sm-logo-text">.io</p>
       </div>
       <div className="menu-links">
         <Link to="/user" style={{ textDecoration: "none" }}>
-          <p className="links">
+          <p className="links" id={pathname === "/user" ? "highlight" : ""}>
             <MdSpaceDashboard className="fas" />
             Dashboard
           </p>
@@ -37,19 +46,28 @@ const SideMenu = ({ logoutUser }) => {
           to="/user/Calculator"
           style={{ textDecoration: "none", color: "none" }}
         >
-          <p className="links">
+          <p
+            className="links"
+            id={pathname.includes("Calculator") ? "highlight" : ""}
+          >
             <FaCalculator className="fas" />
             Calculator
           </p>
         </Link>
         <Link to="/user/Wishlist" style={{ textDecoration: "none" }}>
-          <p className="links">
+          <p
+            className="links"
+            id={pathname.includes("Wishlist") ? "highlight" : ""}
+          >
             <BsBookmarksFill className="fas" />
             Wishlist
           </p>
         </Link>
         <Link to="/user/Settings" style={{ textDecoration: "none" }}>
-          <p className="links" id="highlight">
+          <p
+            className="links"
+            id={pathname.includes("Settings") ? "highlight" : ""}
+          >
             <IoMdSettings className="fas" />
             Settings
           </p>

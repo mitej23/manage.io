@@ -37,6 +37,11 @@
   font-weight: 500;
 }
 
+.logo:hover,
+.sm-logo:hover {
+  cursor: pointer;
+}
+
 .menu-links {
   height: 300px;
   width: 100%;

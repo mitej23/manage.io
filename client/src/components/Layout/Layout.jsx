@@ -3,7 +3,6 @@ import SideMenu from "../SideMenu/SideMenu";
 import "./Layout.styles.css";
 
 const Layout = (props) => {
-  console.log(props.children);
   return (
     <div className="page">
       <SideMenu />
