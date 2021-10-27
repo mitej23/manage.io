@@ -6,13 +6,6 @@ import { withRouter } from "react-router";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 
-// interface errors{
-//     // name?: string,
-//     // email?: string;
-//     // password?: string;
-//     // confirmPassword?: string;
-// }
-
 class Register extends Component {
   constructor() {
     super();
@@ -26,18 +19,20 @@ class Register extends Component {
   }
 
   componentDidMount() {
+    console.log("Register component mounted");
     // If logged in and user navigates to Register page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/user");
     }
   }
 
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors,
       });
     }
+    return null;
   }
 
   onChange = (e) => {
@@ -96,6 +91,7 @@ class Register extends Component {
             error={errors.password}
             id="password"
             type="password"
+            autoComplete="true"
             className={classNames("", {
               invalid: errors.password,
             })}
@@ -107,6 +103,7 @@ class Register extends Component {
             error={errors.password2}
             id="password2"
             type="password"
+            autoComplete="true"
             className={classNames("", {
               invalid: errors.password2,
             })}
@@ -121,7 +118,7 @@ class Register extends Component {
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
+  errors: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({

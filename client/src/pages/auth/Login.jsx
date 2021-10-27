@@ -14,15 +14,16 @@ class Login extends Component {
       errors: {},
     };
   }
-  componentWillReceiveProps(nextProps) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.auth.isAuthenticated) {
-      this.props.history.push("/dashboard"); // push user to dashboard when they login
+      nextProps.history.push("/user"); // push user to dashboard when they login
     }
     if (nextProps.errors) {
       this.setState({
         errors: nextProps.errors,
       });
     }
+    return null;
   }
 
   onChange = (e) => {
@@ -40,8 +41,9 @@ class Login extends Component {
 
   componentDidMount() {
     // If logged in and user navigates to Login page, should redirect them to dashboard
+    console.log(this.props);
     if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/dashboard");
+      this.props.history.push("/user");
     }
   }
 
@@ -75,6 +77,7 @@ class Login extends Component {
             error={errors.password}
             id="password"
             type="password"
+            autoComplete="true"
             className={classNames("", {
               invalid: errors.password || errors.passwordincorrect,
             })}
@@ -89,11 +92,12 @@ class Login extends Component {
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  errors: PropTypes.object.isRequired,
+  errors: PropTypes.object,
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
   errors: state.errors,
 });
+
 export default connect(mapStateToProps, { loginUser })(Login);

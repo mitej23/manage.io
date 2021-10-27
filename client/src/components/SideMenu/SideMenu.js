@@ -8,14 +8,14 @@ import { logoutUser } from "../../redux/actions/auth.actions";
 //icons
 import { MdSpaceDashboard } from "react-icons/md";
 import { FaCalculator } from "react-icons/fa";
-import { BiGitCompare } from "react-icons/bi";
 import { IoMdSettings } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
+import { BsBookmarksFill } from "react-icons/bs";
+import { Link } from "react-router-dom";
 
 const SideMenu = ({ logoutUser }) => {
   const onLogoutClick = (e) => {
     e.preventDefault();
-    console.log(logoutUser);
     logoutUser();
   };
 
@@ -27,22 +27,33 @@ const SideMenu = ({ logoutUser }) => {
         <p className="sm-logo-text">.io</p>
       </div>
       <div className="menu-links">
-        <p className="links">
-          <MdSpaceDashboard className="fas" />
-          Dashboard
-        </p>
-        <p className="links">
-          <FaCalculator className="fas" />
-          Calculator
-        </p>
-        <p className="links">
-          <BiGitCompare className="fas" />
-          Compare
-        </p>
-        <p className="links" id="highlight">
-          <IoMdSettings className="fas" />
-          Settings
-        </p>
+        <Link to="/user" style={{ textDecoration: "none" }}>
+          <p className="links">
+            <MdSpaceDashboard className="fas" />
+            Dashboard
+          </p>
+        </Link>
+        <Link
+          to="/user/Calculator"
+          style={{ textDecoration: "none", color: "none" }}
+        >
+          <p className="links">
+            <FaCalculator className="fas" />
+            Calculator
+          </p>
+        </Link>
+        <Link to="/user/Wishlist" style={{ textDecoration: "none" }}>
+          <p className="links">
+            <BsBookmarksFill className="fas" />
+            Wishlist
+          </p>
+        </Link>
+        <Link to="/user/Settings" style={{ textDecoration: "none" }}>
+          <p className="links" id="highlight">
+            <IoMdSettings className="fas" />
+            Settings
+          </p>
+        </Link>
         <p className="links" id="exit" onClick={onLogoutClick}>
           <FiLogOut className="fas" />
           Log out

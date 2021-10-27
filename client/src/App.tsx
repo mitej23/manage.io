@@ -16,9 +16,9 @@ import Landing from "./pages/Landing/Landing";
 import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
-import dashboard from "./pages/dashboard/dashboard";
+import User from "./pages/User/User";
 
-// Check for token to keep user logged in
+//Check for token to keep user logged in
 if (localStorage.jwtToken) {
   // Set auth token header auth
   const token = localStorage.jwtToken;
@@ -33,10 +33,9 @@ if (localStorage.jwtToken) {
     // Logout user
     store.dispatch(logoutUser());
     // Redirect to login
-    window.location.href = "./login";
+    window.location.href = "/login";
   }
 }
-
 
 function App() {
   return (
@@ -47,7 +46,8 @@ function App() {
           <Route exact path="/register" component={Register} />
           <Route exact path="/login" component={Login} />
           <Switch>
-            <PrivateRoute exact path="/dashboard" component={dashboard} />
+            {/* Don't add exact because it has nested routes, it won't work if we add path to this. */}
+            <PrivateRoute path="/user" component={User} />
           </Switch>
         </div>
       </Router>

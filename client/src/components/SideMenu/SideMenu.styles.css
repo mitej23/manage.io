@@ -55,6 +55,11 @@
   flex-grow: 1;
 }
 
+a {
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.35);
+}
+
 .links {
   display: flex;
   align-items: center;
@@ -91,7 +96,7 @@
   border-radius: 8px;
 }
 
-.links:last-of-type:hover::before {
+a #exit:hover::before {
   background-color: rgb(238, 147, 147, 0.22);
 }
 
