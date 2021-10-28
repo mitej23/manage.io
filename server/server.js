@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const app = express();
 const passport = require("passport");
 
-const users = require("./routes/api/users");
+const agents = require("./routes/api/agents");
 
 
 app.use(express.urlencoded({extended: true}));
@@ -26,7 +26,7 @@ app.use(passport.initialize());
 // Passport config
 require("./config/passport")(passport);
 // Routes
-app.use("/api/users", users);
+app.use("/api/agents", agents);
 
 
 
