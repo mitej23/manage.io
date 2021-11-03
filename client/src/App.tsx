@@ -11,6 +11,10 @@ import { setCurrentUser, logoutUser } from "./redux/actions/auth.actions";
 import { Provider } from "react-redux";
 import store from "./redux/store";
 
+//react-query
+import { QueryClientProvider, QueryClient } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
 //components
 import Landing from "./pages/Landing/Landing";
 import Register from "./pages/auth/Register";
@@ -37,20 +41,32 @@ if (localStorage.jwtToken) {
   }
 }
 
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+      cacheTime: 300000,
+    },
+  },
+});
+
 function App() {
   return (
     <Provider store={store}>
-      <Router>
-        <div className="App">
-          <Route exact path="/" component={Landing} />
-          <Route exact path="/register" component={Register} />
-          <Route exact path="/login" component={Login} />
-          <Switch>
-            {/* Don't add exact because it has nested routes, it won't work if we add path to this. */}
-            <PrivateRoute path="/user" component={User} />
-          </Switch>
-        </div>
-      </Router>
+      <QueryClientProvider client={queryClient}>
+        <Router>
+          <div className="App">
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            <Switch>
+              {/* Don't add exact because it has nested routes, it won't work if we add path to this. */}
+              <PrivateRoute path="/user" component={User} />
+            </Switch>
+          </div>
+        </Router>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
     </Provider>
   );
 }
