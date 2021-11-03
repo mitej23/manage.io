@@ -10,7 +10,6 @@ const validateLoginInput = require("../../validation/login");
 
 // Load agent model
 const Agent = require("../../models/Agent");
-const { getUserNameFromEmail } = require("../../utils/utiltiy_functions");
 
 // @route POST api/agents/register
 // @desc Register agent
@@ -97,9 +96,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-//add,remove and get clients
-
-// add clients to agent
+// add client to agent
 router.post("/client", (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
   if (!isValid) {
@@ -136,6 +133,8 @@ router.post("/client", (req, res) => {
   });
 });
 
+//get clients of the agent
+
 router.get("/client", (req, res) => {
   const agentEmail = req.query.agentEmail;
   Agent.findOne({ agentEmail }).then((agent) => {
@@ -146,6 +145,8 @@ router.get("/client", (req, res) => {
     }
   });
 });
+
+//add fund to client
 
 router.post("/client/fund", (req, res) => {
   const { agentEmail, clientEmail, fundName, amt, code, date } = req.body;
@@ -168,6 +169,8 @@ router.post("/client/fund", (req, res) => {
     }
   });
 });
+
+//get funds of the client
 
 router.get("/client/fund", (req, res) => {
   const agentEmail = req.query.agentEmail;
