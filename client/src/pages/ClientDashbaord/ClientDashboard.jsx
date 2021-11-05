@@ -67,7 +67,7 @@ const ClientDashboard = () => {
           }}
           className="add-fund-btn"
         >
-          <p>+ Add Client</p>
+          <p>+ Add Fund</p>
         </Link>
       </div>
       <div className="portfolio-container">
