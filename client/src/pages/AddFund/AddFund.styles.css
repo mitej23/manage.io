@@ -25,10 +25,9 @@ input {
   font-family: var(--font-family);
   font-style: var(--font-style);
   font-size: 1.0125rem;
-  padding: 1rem 0.5rem;
+  padding: 1rem 0.75rem;
   border: var(--border);
   border-radius: 5px;
-  padding-left: 1.75%;
 }
 
 input:-webkit-autofill,
@@ -78,6 +77,12 @@ span.ripple {
   transform: scale(0);
   animation: ripple 600ms linear;
   background-color: rgba(255, 255, 255, 0.7);
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
 }
 
 @keyframes ripple {

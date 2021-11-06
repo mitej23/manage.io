@@ -135,11 +135,31 @@ router.post("/client", (req, res) => {
 
 //get clients of the agent
 
-router.get("/client", (req, res) => {
+router.get("/clients", (req, res) => {
   const agentEmail = req.query.agentEmail;
   Agent.findOne({ agentEmail }).then((agent) => {
     if (agent) {
       return res.status(200).json(agent.clients);
+    } else {
+      return res.status(404).json({ agentnotfound: "Agent not found" });
+    }
+  });
+});
+
+//get client of the agent
+router.get("/client", (req, res) => {
+  const agentEmail = req.query.agentEmail;
+  const clientEmail = req.query.clientEmail;
+  Agent.findOne({ agentEmail }).then((agent) => {
+    if (agent) {
+      const client = agent.clients.find(
+        (client) => client.clientEmail === clientEmail
+      );
+      if (client) {
+        return res.status(200).json(client);
+      } else {
+        return res.status(404).json({ clientnotfound: "Client not found" });
+      }
     } else {
       return res.status(404).json({ agentnotfound: "Agent not found" });
     }

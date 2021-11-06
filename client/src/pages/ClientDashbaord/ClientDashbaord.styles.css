@@ -96,6 +96,10 @@
 
 .portfolio-fund-name {
   width: 60%;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .portfolio-fund-right {
@@ -116,7 +120,7 @@
   cursor: pointer;
 }
 
-.portfolio-fund:hover::before {
+.portfolio-fund-name:hover::before {
   content: "";
   position: absolute;
   height: 2.5rem;

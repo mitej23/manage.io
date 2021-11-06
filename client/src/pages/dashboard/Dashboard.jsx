@@ -7,7 +7,7 @@ import axios from "axios";
 
 const Dashboard = ({ auth }) => {
   const { data, isLoading } = useQuery(["all-clients"], () => {
-    return axios.get("/api/agents/client", {
+    return axios.get("/api/agents/clients", {
       params: { agentEmail: auth.user.email },
     });
   });
@@ -71,10 +71,12 @@ const Dashboard = ({ auth }) => {
         <div className="agent-portfolio-container-content">
           {data &&
             data.data.map((client) => {
+              //remove .com from email
+              const clientEmail = client.clientEmail.split(".com")[0];
               return (
                 <Link
                   to={{
-                    pathname: `/user/${client.clientName.replace(/ /g, "-")}`,
+                    pathname: `/user/${clientEmail}`,
                     state: { client: client },
                   }}
                   style={{ textDecoration: "none" }}

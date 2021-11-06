@@ -70,8 +70,6 @@ const AddClient = ({ auth }) => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  console.log(errors);
-
   return (
     <div>
       <div className="add-fund">

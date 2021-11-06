@@ -1,44 +1,42 @@
 import React from "react";
 import "./ClientDashbaord.styles.css";
-import { useHistory, useLocation, Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
+import { useQuery } from "react-query";
+import axios from "axios";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import { FiChevronLeft } from "react-icons/fi";
 
-const ClientDashboard = () => {
+const ClientDashboard = ({ auth }) => {
   const history = useHistory();
   const { pathname } = history.location;
-  const { state } = useLocation();
+  const lastPath = pathname.split("/").pop() + ".com";
 
-  console.log(state.client);
+  const { data, isLoading } = useQuery(["client-data", lastPath], () => {
+    return axios.get(
+      `/api/agents/client?agentEmail=${auth.user.email}&clientEmail=${lastPath}`
+    );
+  });
 
   const backToDashboard = () => {
     history.push("/user");
   };
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  console.log(data);
+
   return (
     <div>
-      {/* <h1>Clients Dashboard</h1>
-      button to go to add client
-      <button
-        onClick={() => {
-          history.push(`${pathname}/add-fund`);
-        }}
-      >
-        Add Fund
-      </button>
-      <button
-        onClick={() => {
-          history.push(`${pathname}/hdfc-fund`);
-        }}
-      >
-        Check fund
-      </button> */}
       <div className="back" onClick={backToDashboard}>
         <FiChevronLeft style={{ marginTop: "2px" }} />
         <p className="back-text ">Dashboard</p>
       </div>
       <div className="container-title">
-        <p>{state.client.clientName.split(" ")[0]}'s Dashboard</p>
+        <p>{data.data.clientName.split(" ")[0]}'s Dashboard</p>
       </div>
       <div className="dashboard-overview-container">
         <div className="dashboard-overview-line">
@@ -47,7 +45,7 @@ const ClientDashboard = () => {
         <div className="dashboard-overview-pie">
           <div className="pie-chart-text-inside">
             <span className="pie-chart-text-total">
-              ${state.client.totalInvested}
+              ${data.data.totalInvested}
             </span>
             {/* <Br /> */}
             <span className="pie-chart-text-growth">+$4000</span>
@@ -63,7 +61,7 @@ const ClientDashboard = () => {
         <Link
           to={{
             pathname: `${pathname}/add-fund`,
-            state: state.client.clientName.split(" ")[0],
+            state: data.data.clientName.split(" ")[0],
           }}
           className="add-fund-btn"
         >
@@ -77,13 +75,13 @@ const ClientDashboard = () => {
           <p className="portfolio-fund-right">Current Value</p>
         </div>
         <div className="portfolio-container-content">
-          {state.client.funds.map((fund) => {
+          {data.data.funds.map((fund) => {
             return (
               <Link
                 className="portfolio-fund"
                 style={{ textDecoration: "none", color: "black" }}
                 to={{
-                  pathname: `${pathname}/${fund.fundName}`,
+                  pathname: `${pathname}/${fund.fundName}-${fund.code}`,
                 }}
               >
                 <p className="portfolio-fund-name">{fund.fundName}</p>
@@ -98,4 +96,14 @@ const ClientDashboard = () => {
   );
 };
 
-export default ClientDashboard;
+ClientDashboard.propTypes = {
+  auth: PropTypes.object.isRequired,
+  errors: PropTypes.object,
+};
+
+const mapStateToProps = (state) => ({
+  auth: state.auth,
+  errors: state.errors,
+});
+
+export default connect(mapStateToProps, null)(ClientDashboard);
