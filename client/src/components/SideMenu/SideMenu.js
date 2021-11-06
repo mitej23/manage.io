@@ -1,6 +1,6 @@
 import React from "react";
 import "./SideMenu.styles.css";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useHistory, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { logoutUser } from "../../redux/actions/auth.actions";
@@ -11,11 +11,11 @@ import { FaCalculator } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { BsBookmarksFill } from "react-icons/bs";
-import { Link } from "react-router-dom";
 
 const SideMenu = ({ logoutUser }) => {
   const { pathname } = useLocation();
   const history = useHistory();
+  const strings = ["Wish", "Calc", "Settings"];
 
   const onLogoutClick = (e) => {
     e.preventDefault();
@@ -25,6 +25,8 @@ const SideMenu = ({ logoutUser }) => {
   const backToDashboard = () => {
     history.push("/user");
   };
+
+  console.log("pathname ", pathname);
 
   return (
     <div className="side-bar">
@@ -37,7 +39,10 @@ const SideMenu = ({ logoutUser }) => {
       </div>
       <div className="menu-links">
         <Link to="/user" style={{ textDecoration: "none" }}>
-          <p className="links" id={pathname === "/user" ? "highlight" : ""}>
+          <p
+            className="links"
+            id={!strings.some((el) => pathname.includes(el)) ? "highlight" : ""}
+          >
             <MdSpaceDashboard className="fas" />
             Dashboard
           </p>

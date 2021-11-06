@@ -1,0 +1,88 @@
+.back {
+  font-weight: normal;
+  display: flex;
+  flex-direction: row;
+  height: max-content;
+  overflow: hidden;
+  align-items: center;
+  margin-left: -5px;
+}
+
+.back:hover {
+  cursor: pointer;
+}
+
+.add-title {
+  font-family: var(--font-family);
+  font-style: var(--font-style);
+  font-size: 0.8rem;
+  margin-top: 0.6rem;
+}
+
+input {
+  height: 2rem;
+  width: 20rem;
+  font-family: var(--font-family);
+  font-style: var(--font-style);
+  font-size: 1.0125rem;
+  padding: 1rem 0.5rem;
+  border: var(--border);
+  border-radius: 5px;
+  padding-left: 1.75%;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 50000s ease-in-out 0s, color 5000s ease-in-out 0s;
+}
+
+#famount,
+#fdate {
+  width: 12rem;
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#submit {
+  width: 5rem;
+  height: 2rem;
+  border: var(--border);
+  border-radius: 5px;
+  margin-top: 1.5rem;
+  overflow: hidden;
+  /* background: #f3f5f7; */
+  cursor: pointer;
+  position: relative;
+  transition: background 400ms;
+}
+
+#submit:hover {
+  cursor: pointer;
+  /* background: #e8e9eb; */
+}
+
+span.ripple {
+  position: absolute; /* The absolute position we mentioned earlier */
+  border-radius: 50%;
+  transform: scale(0);
+  animation: ripple 600ms linear;
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
