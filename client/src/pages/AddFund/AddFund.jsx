@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import "./AddFund.styles.css";
-import { FiChevronLeft } from "react-icons/fi";
+import BackButton from "../../components/BackButton/BackButton";
 
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -14,6 +14,10 @@ import * as yup from "yup";
 import _ from "lodash";
 import axios from "axios";
 import { useMutation, useQueryClient } from "react-query";
+
+//date
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const schema = yup.object().shape({
   fund: yup
@@ -31,6 +35,9 @@ const schema = yup.object().shape({
 });
 
 const AddFund = ({ auth }) => {
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
+
   let history = useHistory();
   const { pathname } = history.location;
   // back button state
@@ -42,6 +49,7 @@ const AddFund = ({ auth }) => {
     reset,
     formState: { isSubmitSuccessful, errors },
     control,
+    watch,
   } = useForm({
     resolver: yupResolver(schema),
   });
@@ -73,8 +81,8 @@ const AddFund = ({ auth }) => {
 
   const onSubmit = (data) => {
     console.log(data);
-    mutate(data);
-    reset();
+    //mutate(data);
+    //reset();
   };
 
   const _loadOptions = async (input, callback) => {
@@ -99,15 +107,24 @@ const AddFund = ({ auth }) => {
     debouncedLoadOptions(input, callback);
   };
 
-  console.log(errors);
+  useEffect(() => {
+    // watch fund
+    const fundChange = watch("fund");
+    // fetch start and end date and pass to date picker
+    if (fundChange) {
+      axios(`/api/fund/range?code=${fundChange.value}`)
+        .then((res) => {
+          setStartDate(new Date(res.data.startDate));
+          setEndDate(new Date(res.data.endDate));
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [watch("fund")]);
 
   return (
     <div>
       <div className="add-fund">
-        <div className="back" onClick={history.goBack}>
-          <FiChevronLeft style={{ marginTop: "2px" }} />
-          <p className="back-text ">{state}'s Dashboard</p>
-        </div>
+        <BackButton text={`${state}'s Dashboard`} />
         <div className="container-title">
           <p>Add Fund</p>
         </div>
@@ -177,7 +194,42 @@ const AddFund = ({ auth }) => {
           />
           <p className="error">{errors.amount?.message}</p>
           <p className="add-title">Date of Investment:</p>
-          <input type="date" id="fdate" name="date" {...register("date")} />
+          {/* <Controller
+            name="date"
+            control={control}
+            render={({ onChange, value }) => (
+              <DatePicker
+                selected={value}
+                onChange={onChange}
+                minDate={startDate}
+                maxDate={endDate}
+                disabled={watch("fund") === undefined ? true : false}
+                dateFormat="dd/MM/yyyy"
+                placeholderText="dd/mm/yyyy"
+                showYearDropdown
+                scrollableYearDropdown
+              />
+            )}
+          /> */}
+          <Controller
+            name="date"
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <ReactDatePicker
+                onChange={onChange}
+                onBlur={onBlur}
+                selected={value}
+                minDate={startDate}
+                maxDate={endDate}
+                disabled={watch("fund") === undefined ? true : false}
+                dateFormat="dd/MM/yyyy"
+                placeholderText="dd/mm/yyyy"
+                showYearDropdown
+                scrollableYearDropdown
+              />
+            )}
+          />
+
           <p className="error">{errors.date?.message}</p>
           <br />
           <button type="submit" id="submit" className="btn">
