@@ -1,0 +1,181 @@
+.fund-head-section {
+  height: fit-content;
+  width: 100%;
+  display: flex;
+  margin-top: 2%;
+}
+
+.fund-head-left {
+  width: 70%;
+}
+
+.fund-head-right {
+  width: 30%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.fund-name,
+.fund-total-inv,
+.total-inv-growth {
+  font-family: Cairo;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  overflow-wrap: break-word;
+  line-height: 32px;
+}
+
+.up-arrow-icon {
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+
+  border-bottom: 5px solid #169b00de;
+  padding-top: 14px;
+  margin-right: 3px;
+}
+
+.total-inv-growth {
+  font-size: 14px;
+  display: flex;
+  padding-left: 5px;
+  color: #169b00de;
+}
+
+.fund-graph {
+  margin-top: 30px;
+  height: 50vh;
+  width: 100%;
+}
+
+.fund-nav {
+  display: flex;
+  font-family: Cairo;
+  font-style: normal;
+  font-weight: 400;
+  align-items: center;
+}
+
+.fund-nav-value {
+  font-size: 22px;
+}
+
+.fund-nav-growth {
+  font-size: 14px;
+  color: #169b00de;
+  margin-left: 3px;
+}
+
+.graph-timeline-conatiner {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.75rem;
+}
+
+.graph-timeline-conatiner > p {
+  font-family: Cairo;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  margin-left: 1rem;
+  padding-left: 0.45rem;
+  padding-right: 0.45rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.graph-timeline-conatiner > p {
+  cursor: pointer;
+}
+
+.graph-timeline-conatiner > p.select {
+  border: 1px solid #cbcbcb;
+}
+
+.fund-overview {
+  height: max-content;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.fund-overview-title > p {
+  display: flex;
+  font-family: Cairo;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.fund-overview-content {
+  display: flex;
+  height: max-content;
+  margin-top: 1rem;
+}
+
+.fund-overview-left {
+  height: 100%;
+  width: 50%;
+}
+
+.fund-overview-divider {
+  width: 0.25px;
+  background-color: #cbcbcb;
+}
+
+.fund-overview-right {
+  height: 100%;
+  width: 50%;
+}
+
+.overview-value-container {
+  height: 2rem;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.overview-value-left > p,
+.overview-value-right > p {
+  font-family: Cairo;
+  font-style: normal;
+  font-size: 1.125rem;
+}
+
+.overview-value-left > p {
+  color: #8b8b8b;
+}
+
+.fund-overview-left > .overview-value-container {
+  padding-right: 2rem;
+}
+
+.fund-overview-right > .overview-value-container {
+  padding-left: 2rem;
+}
+
+@media all and (max-width: 780px) {
+  .fund-overview-content {
+    flex-direction: column;
+  }
+
+  .fund-overview-left {
+    width: 100%;
+  }
+  .fund-overview-right {
+    width: 100%;
+  }
+  .fund-overview-divider {
+    display: none;
+  }
+  .fund-overview-left > .overview-value-container {
+    padding-right: 2rem;
+  }
+
+  .fund-overview-right > .overview-value-container {
+    padding-left: 0rem;
+    padding-right: 2rem;
+  }
+}

@@ -120,7 +120,7 @@
   cursor: pointer;
 }
 
-.portfolio-fund-name:hover::before {
+.portfolio-fund:hover::before {
   content: "";
   position: absolute;
   height: 2.5rem;

@@ -1,0 +1,13 @@
+.back {
+  font-weight: normal;
+  display: flex;
+  flex-direction: row;
+  height: max-content;
+  overflow: hidden;
+  align-items: center;
+  margin-left: -5px;
+}
+
+.back:hover {
+  cursor: pointer;
+}

@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import { FiChevronLeft } from "react-icons/fi";
+import BackButton from "../../components/BackButton/BackButton";
 
 const ClientDashboard = ({ auth }) => {
   const history = useHistory();
@@ -19,22 +20,13 @@ const ClientDashboard = ({ auth }) => {
     );
   });
 
-  const backToDashboard = () => {
-    history.push("/user");
-  };
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
-  console.log(data);
-
   return (
     <div>
-      <div className="back" onClick={backToDashboard}>
-        <FiChevronLeft style={{ marginTop: "2px" }} />
-        <p className="back-text ">Dashboard</p>
-      </div>
+      <BackButton text={"Dashboard"} />
       <div className="container-title">
         <p>{data.data.clientName.split(" ")[0]}'s Dashboard</p>
       </div>
@@ -82,6 +74,7 @@ const ClientDashboard = ({ auth }) => {
                 style={{ textDecoration: "none", color: "black" }}
                 to={{
                   pathname: `${pathname}/${fund.fundName}-${fund.code}`,
+                  fund: fund,
                 }}
               >
                 <p className="portfolio-fund-name">{fund.fundName}</p>

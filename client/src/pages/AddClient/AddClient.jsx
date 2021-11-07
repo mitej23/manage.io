@@ -9,10 +9,9 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 
+import BackButton from "../../components/BackButton/BackButton";
 import "./AddClient.styles.css";
 import { FiChevronLeft } from "react-icons/fi";
-
-
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -73,10 +72,7 @@ const AddClient = ({ auth }) => {
   return (
     <div>
       <div className="add-fund">
-        <div className="back" onClick={backToDashboard}>
-          <FiChevronLeft style={{ marginTop: "2px" }} />
-          <p className="back-text ">Dashboard</p>
-        </div>
+        <BackButton text={"Dashboard"} />
         <div className="container-title">
           <p>Add Client</p>
         </div>
