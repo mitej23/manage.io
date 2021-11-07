@@ -7,8 +7,8 @@
 }
 
 .content {
-  width: calc(100vw - 240px);
-  margin-left: 240px;
+  width: calc(100vw - 16.1rem);
+  margin-left: 15rem;
   display: flex;
   padding: 4%;
   flex-direction: column;

@@ -126,8 +126,8 @@ a #exit:hover::before {
   }
 
   .content {
-    width: calc(100vw - 120px);
-    margin-left: 90px;
+    width: calc(100% - 85px);
+    margin-left: 85px;
   }
 
   .logo {
