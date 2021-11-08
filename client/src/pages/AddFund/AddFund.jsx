@@ -18,6 +18,7 @@ import { useMutation, useQueryClient } from "react-query";
 //date
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { parse } from "date-fns";
 
 const schema = yup.object().shape({
   fund: yup
@@ -74,15 +75,15 @@ const AddFund = ({ auth }) => {
       onSuccess: () => {
         queryClient.invalidateQueries("all-clients");
         queryClient.invalidateQueries(["client-data", clientEmail]);
-        history.push(`/user/${pathname.split("/")[2]}`);
+        history.goBack();
       },
     }
   );
 
   const onSubmit = (data) => {
     console.log(data);
-    //mutate(data);
-    //reset();
+    mutate(data);
+    reset();
   };
 
   const _loadOptions = async (input, callback) => {
@@ -114,12 +115,16 @@ const AddFund = ({ auth }) => {
     if (fundChange) {
       axios(`/api/fund/range?code=${fundChange.value}`)
         .then((res) => {
-          setStartDate(new Date(res.data.startDate));
-          setEndDate(new Date(res.data.endDate));
+          //format the date from dd/mm/yyyy to yyyy-mm-dd
+          const start = parse(res.data.startDate, "dd-MM-yyyy", new Date());
+          const end = parse(res.data.endDate, "dd-MM-yyyy", new Date());
+          setStartDate(new Date(start));
+          setEndDate(new Date(end));
         })
         .catch((err) => console.log(err));
     }
   }, [watch("fund")]);
+
 
   return (
     <div>
@@ -194,24 +199,8 @@ const AddFund = ({ auth }) => {
           />
           <p className="error">{errors.amount?.message}</p>
           <p className="add-title">Date of Investment:</p>
-          {/* <Controller
-            name="date"
-            control={control}
-            render={({ onChange, value }) => (
-              <DatePicker
-                selected={value}
-                onChange={onChange}
-                minDate={startDate}
-                maxDate={endDate}
-                disabled={watch("fund") === undefined ? true : false}
-                dateFormat="dd/MM/yyyy"
-                placeholderText="dd/mm/yyyy"
-                showYearDropdown
-                scrollableYearDropdown
-              />
-            )}
-          /> */}
           <Controller
+            id="date"
             name="date"
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
