@@ -36,8 +36,8 @@ const schema = yup.object().shape({
 });
 
 const AddFund = ({ auth }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
+  const [incDates, setIncDates] = useState([new Date()]);
+  const [enableDate, setEnableDate] = useState(false);
 
   let history = useHistory();
   const { pathname } = history.location;
@@ -111,20 +111,20 @@ const AddFund = ({ auth }) => {
   useEffect(() => {
     // watch fund
     const fundChange = watch("fund");
-    // fetch start and end date and pass to date picker
+
     if (fundChange) {
-      axios(`/api/fund/range?code=${fundChange.value}`)
-        .then((res) => {
-          //format the date from dd/mm/yyyy to yyyy-mm-dd
-          const start = parse(res.data.startDate, "dd-MM-yyyy", new Date());
-          const end = parse(res.data.endDate, "dd-MM-yyyy", new Date());
-          setStartDate(new Date(start));
-          setEndDate(new Date(end));
-        })
-        .catch((err) => console.log(err));
+      axios(`/api/fund/dates?code=${fundChange.value}`).then((res) => {
+        //parse the date and set state
+        const dates = res.data.dates.map((date) =>
+          parse(date, "dd-MM-yyyy", new Date())
+        );
+        setIncDates(dates);
+        setEnableDate(true);
+      });
     }
   }, [watch("fund")]);
 
+  console.log(enableDate);
 
   return (
     <div>
@@ -208,13 +208,11 @@ const AddFund = ({ auth }) => {
                 onChange={onChange}
                 onBlur={onBlur}
                 selected={value}
-                minDate={startDate}
-                maxDate={endDate}
-                disabled={watch("fund") === undefined ? true : false}
+                includeDates={incDates}
+                disabled={enableDate ? false : true}
                 dateFormat="dd/MM/yyyy"
                 placeholderText="dd/mm/yyyy"
                 showYearDropdown
-                scrollableYearDropdown
               />
             )}
           />
