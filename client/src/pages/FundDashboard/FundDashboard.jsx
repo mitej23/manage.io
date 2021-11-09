@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./FundDashboard.styles.css";
 
 import { useHistory, Link } from "react-router-dom";
 import BackButton from "../../components/BackButton/BackButton";
+import LineChart from "../../components/LineChart/LineChart";
 
 import { useQuery } from "react-query";
 import axios from "axios";
@@ -13,6 +14,22 @@ const FundDashboard = () => {
   const { pathname, fund } = history.location;
   const code = pathname.split("-").pop();
 
+  //usestate
+
+  const [reversedData, setReversedData] = useState([]);
+  const [currNavValue, setCurrNavValue] = useState(0);
+  const [prevNavValue, setPrevNavValue] = useState(0);
+  const [oldNavValue, setOldNavValue] = useState(0);
+  const [percentageInc, setPercentageInc] = useState(0);
+  const [amtInvested, setAmtInvested] = useState(0);
+  const [totalRet, setTotalRet] = useState(0);
+  const [threeYearIndex, setThreeYearIndex] = useState(0);
+  const [yearIndex, setYearIndex] = useState(0);
+  const [indexOfDoi, setIndexOfDoi] = useState(0);
+  const [chartIndex, setChartIndex] = useState(indexOfDoi);
+
+  //react query
+
   const { data, isLoading } = useQuery(code, () => {
     return axios.get(
       `/api/fund?code=${code}&doi=${moment(fund.dateOfInvestment).format(
@@ -21,26 +38,47 @@ const FundDashboard = () => {
     );
   });
 
+  useEffect(() => {
+    if (data && fund) {
+      setCurrNavValue(data.data.data.data[0].nav);
+      setPrevNavValue(data.data.data.data[1].nav);
+      setOldNavValue(data.data.timeOfInv[0].nav);
+      setPercentageInc(((currNavValue - prevNavValue) / prevNavValue) * 100);
+      setAmtInvested(parseFloat(fund.amtInvested));
+      setTotalRet((percentageInc * amtInvested) / 100);
+      setThreeYearIndex(data.data.threeYearIndex);
+      setYearIndex(data.data.yearIndex);
+      setIndexOfDoi(data.data.indexOfDoi);
+      setReversedData(data.data.data.data.slice(0, threeYearIndex).reverse());
+    }
+
+    return () => {};
+  }, [
+    data,
+    fund,
+    amtInvested,
+    currNavValue,
+    prevNavValue,
+    percentageInc,
+    indexOfDoi,
+    threeYearIndex,
+    yearIndex,
+  ]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   if (!data || !fund) {
-    return <div>No data</div>;
+    return (
+      <div>
+        <BackButton text={"Client's Dashboard"} />
+        No data
+      </div>
+    );
   }
-  // calculate percentage increase
+
   if (data && fund) {
-    const currNavValue = data.data.data.data[0].nav;
-    const prevNavValue = data.data.data.data[1].nav;
-    const oldNavValue = data.data.timeOfInv[0].nav;
-    const percentageInc = ((currNavValue - oldNavValue) / oldNavValue) * 100;
-
-    const amtInvested = parseFloat(fund.amtInvested);
-    // calculate total return
-    const totalRet = (percentageInc * amtInvested) / 100;
-
-    console.log(amtInvested + parseInt(totalRet));
-
     return (
       <div>
         <BackButton text={"Client's Dashboard"} />
@@ -66,13 +104,13 @@ const FundDashboard = () => {
           </div>
         </div>
         <div className="fund-graph">
-          <canvas id="myChart"></canvas>
+          <LineChart data={reversedData} />
         </div>
         <div className="graph-timeline-conatiner">
-          <p>1D</p>
-          <p className="select">1M</p>
+          <p>Inv.</p>
           <p>1Y</p>
           <p>3Y</p>
+          <p className="select">All</p>
         </div>
         <div className="fund-overview">
           <div className="fund-overview-title">

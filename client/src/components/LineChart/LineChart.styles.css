@@ -1,0 +1,33 @@
+.tooltip {
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 50px;
+  width: 110px;
+  border-radius: 5px;
+  background-color: #fff;
+  text-align: center;
+  border: var(--border);
+}
+
+.date {
+  font-size: 0.75rem;
+  margin-bottom: 2px;
+}
+
+.nav {
+  margin-top: 2px;
+  font-size: 0.75rem;
+}
+
+.recharts-cartesian-axis-ticks:nth-child(even) {
+  display: none;
+}
+
+g.recharts-layer.recharts-cartesian-axis.recharts-xAxis.xAxis
+  > g
+  > g:nth-child(odd) {
+  display: none;
+}
