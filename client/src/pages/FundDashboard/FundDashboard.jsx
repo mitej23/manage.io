@@ -26,7 +26,9 @@ const FundDashboard = () => {
   const [threeYearIndex, setThreeYearIndex] = useState(0);
   const [yearIndex, setYearIndex] = useState(0);
   const [indexOfDoi, setIndexOfDoi] = useState(0);
-  const [chartIndex, setChartIndex] = useState(indexOfDoi);
+  const [chartIndex, setChartIndex] = useState(0);
+  const [yearInc, setYearInc] = useState(0);
+  const [yearGrowth, setYearGrowth] = useState(0);
 
   //react query
 
@@ -40,6 +42,16 @@ const FundDashboard = () => {
 
   useEffect(() => {
     if (data && fund) {
+      setYearGrowth(
+        ((data.data.data.data[0].nav -
+          data.data.data.data[data.data.yearIndex].nav) /
+          data.data.data.data[data.data.yearIndex].nav) *
+          100
+      );
+      setYearInc(
+        data.data.data.data[0].nav -
+          data.data.data.data[data.data.yearIndex].nav
+      );
       setCurrNavValue(data.data.data.data[0].nav);
       setPrevNavValue(data.data.data.data[1].nav);
       setOldNavValue(data.data.timeOfInv[0].nav);
@@ -49,7 +61,10 @@ const FundDashboard = () => {
       setThreeYearIndex(data.data.threeYearIndex);
       setYearIndex(data.data.yearIndex);
       setIndexOfDoi(data.data.indexOfDoi);
-      setReversedData(data.data.data.data.slice(0, threeYearIndex).reverse());
+      setChartIndex(data.data.indexOfDoi);
+      setReversedData(
+        data.data.data.data.slice(0, data.data.indexOfDoi).reverse()
+      );
     }
 
     return () => {};
@@ -89,7 +104,10 @@ const FundDashboard = () => {
               <p className="fund-nav-value">
                 ${parseFloat(currNavValue).toFixed(2)}
               </p>
-              <p className="fund-nav-growth">+ 57.85 ( 62.35% ) 1y </p>
+              <p className="fund-nav-growth">
+                + {parseFloat(yearInc).toFixed(2)} ({" "}
+                {parseFloat(yearGrowth).toFixed(2)}% ) 1y{" "}
+              </p>
             </div>
           </div>
           <div className="fund-head-right">
@@ -107,10 +125,50 @@ const FundDashboard = () => {
           <LineChart data={reversedData} />
         </div>
         <div className="graph-timeline-conatiner">
-          <p>Inv.</p>
-          <p>1Y</p>
-          <p>3Y</p>
-          <p className="select">All</p>
+          <p
+            onClick={() => {
+              setReversedData(
+                data.data.data.data.slice(0, indexOfDoi).reverse()
+              );
+              setChartIndex(indexOfDoi);
+            }}
+            className={chartIndex === indexOfDoi ? "select" : ""}
+          >
+            Inv.
+          </p>
+          <p
+            onClick={() => {
+              setReversedData(
+                data.data.data.data.slice(0, yearIndex).reverse()
+              );
+              setChartIndex(yearIndex);
+            }}
+            className={chartIndex === yearIndex ? "select" : ""}
+          >
+            1Y
+          </p>
+          <p
+            onClick={() => {
+              setReversedData(
+                data.data.data.data.slice(0, threeYearIndex).reverse()
+              );
+              setChartIndex(threeYearIndex);
+            }}
+            className={chartIndex === threeYearIndex ? "select" : ""}
+          >
+            3Y
+          </p>
+          <p
+            onClick={() => {
+              setReversedData(data.data.data.data.slice().reverse());
+              setChartIndex(data.data.data.data.length);
+            }}
+            className={
+              chartIndex === data.data.data.data.length ? "select" : ""
+            }
+          >
+            All
+          </p>
         </div>
         <div className="fund-overview">
           <div className="fund-overview-title">
