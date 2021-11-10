@@ -1,0 +1,25 @@
+.graph-timeline-conatiner {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1.75rem;
+}
+
+.graph-timeline-conatiner > p {
+  font-family: Cairo;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  margin-left: 1rem;
+  padding-left: 0.45rem;
+  padding-right: 0.45rem;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+
+.graph-timeline-conatiner > p {
+  cursor: pointer;
+}
+
+.graph-timeline-conatiner > p.select {
+  border: 1px solid #cbcbcb;
+}

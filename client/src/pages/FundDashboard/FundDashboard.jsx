@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./FundDashboard.styles.css";
 
-import { useHistory, Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import BackButton from "../../components/BackButton/BackButton";
 import LineChart from "../../components/LineChart/LineChart";
+import GraphTimeLineContainer from "../../components/GraphTimelineContainer/GraphTimelineContainer";
 
 import { useQuery } from "react-query";
 import axios from "axios";
@@ -124,52 +125,17 @@ const FundDashboard = () => {
         <div className="fund-graph">
           <LineChart data={reversedData} />
         </div>
-        <div className="graph-timeline-conatiner">
-          <p
-            onClick={() => {
-              setReversedData(
-                data.data.data.data.slice(0, indexOfDoi).reverse()
-              );
-              setChartIndex(indexOfDoi);
-            }}
-            className={chartIndex === indexOfDoi ? "select" : ""}
-          >
-            Inv.
-          </p>
-          <p
-            onClick={() => {
-              setReversedData(
-                data.data.data.data.slice(0, yearIndex).reverse()
-              );
-              setChartIndex(yearIndex);
-            }}
-            className={chartIndex === yearIndex ? "select" : ""}
-          >
-            1Y
-          </p>
-          <p
-            onClick={() => {
-              setReversedData(
-                data.data.data.data.slice(0, threeYearIndex).reverse()
-              );
-              setChartIndex(threeYearIndex);
-            }}
-            className={chartIndex === threeYearIndex ? "select" : ""}
-          >
-            3Y
-          </p>
-          <p
-            onClick={() => {
-              setReversedData(data.data.data.data.slice().reverse());
-              setChartIndex(data.data.data.data.length);
-            }}
-            className={
-              chartIndex === data.data.data.data.length ? "select" : ""
-            }
-          >
-            All
-          </p>
-        </div>
+        <GraphTimeLineContainer
+          props={{
+            data,
+            yearIndex,
+            chartIndex,
+            setChartIndex,
+            threeYearIndex,
+            setReversedData,
+            indexOfDoi,
+          }}
+        />
         <div className="fund-overview">
           <div className="fund-overview-title">
             <p>Overview</p>
@@ -239,10 +205,10 @@ const FundDashboard = () => {
               </div>
               <div className="overview-value-container">
                 <div className="overview-value-left">
-                  <p>Previous Value:</p>
+                  <p>At time of Inv.:</p>
                 </div>
                 <div className="overview-value-right">
-                  <p>${parseFloat(prevNavValue).toFixed(2)}</p>
+                  <p>${parseFloat(oldNavValue).toFixed(2)}</p>
                 </div>
               </div>
             </div>
