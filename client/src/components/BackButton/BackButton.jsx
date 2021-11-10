@@ -1,17 +1,22 @@
 import React from "react";
-import "./BackButton.styles.css"
-import { useHistory } from "react-router-dom";
+import "./BackButton.styles.css";
+import { useLocation, Link } from "react-router-dom";
 import { FiChevronLeft } from "react-icons/fi";
 
-
 const BackButton = ({ text }) => {
-  let history = useHistory();
+  const { pathname } = useLocation();
+  const path = pathname.substr(0, pathname.lastIndexOf("/"));
+
   return (
     <>
-      <div className="back" onClick={history.goBack}>
+      <Link
+        className="back"
+        to={path}
+        style={{ textDecoration: "none", color: "black" }}
+      >
         <FiChevronLeft style={{ marginTop: "2px" }} />
         <p>{text}</p>
-      </div>
+      </Link>
     </>
   );
 };
