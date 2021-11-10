@@ -48,7 +48,7 @@ const LineChart = ({ data }) => {
             tick={{ fontSize: "12px" }}
             tickFormatter={(value) => {
               const date = processDate(value);
-              const month = date.getMonth() + 1;
+              const month = date.getMonth();
               const year = date.getFullYear();
               return `${monthNames[month]}'${year % 100}`;
             }}
