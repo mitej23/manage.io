@@ -13,7 +13,6 @@ router.get("/", async (req, res) => {
     const code = req.query.code;
     const doi = req.query.doi;
     const processedDoi = processDate(doi);
-    console.log(processedDoi);
     let response = await axios
       .get(`https://api.mfapi.in/mf/${code}`)
       .then((resp) => {
@@ -54,7 +53,6 @@ router.get("/", async (req, res) => {
           // get index of doi
           if (indexOfDoiFound === false) {
             if (element.date === doi) {
-              console.log(element.date, doi);
               indexOfDoiFound = true;
               indexOfDoi = i;
             }

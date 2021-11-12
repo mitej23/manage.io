@@ -6,7 +6,6 @@ import axios from "axios";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import { FiChevronLeft } from "react-icons/fi";
 import BackButton from "../../components/BackButton/BackButton";
 
 const ClientDashboard = ({ auth }) => {
@@ -19,6 +18,7 @@ const ClientDashboard = ({ auth }) => {
       `/api/agents/client?agentEmail=${auth.user.email}&clientEmail=${lastPath}`
     );
   });
+  
 
   if (isLoading) {
     return <div>Loading...</div>;

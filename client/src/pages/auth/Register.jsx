@@ -19,7 +19,6 @@ class Register extends Component {
   }
 
   componentDidMount() {
-    console.log("Register component mounted");
     // If logged in and user navigates to Register page, should redirect them to dashboard
     if (this.props.auth.isAuthenticated) {
       this.props.history.push("/user");

@@ -26,8 +26,6 @@ const SideMenu = ({ logoutUser }) => {
     history.push("/user");
   };
 
-  console.log("pathname ", pathname);
-
   return (
     <div className="side-bar">
       <p className="logo" onClick={backToDashboard}>
