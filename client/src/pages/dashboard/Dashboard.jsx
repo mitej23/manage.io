@@ -5,6 +5,8 @@ import PropTypes from "prop-types";
 import { useQuery } from "react-query";
 import axios from "axios";
 
+import TimelineChart from "../../components/TimelineChart/TimelineChart";
+
 const Dashboard = ({ auth }) => {
   const { data, isLoading } = useQuery(["all-clients"], () => {
     return axios.get("/api/agents/clients", {
@@ -12,7 +14,16 @@ const Dashboard = ({ auth }) => {
     });
   });
 
-  if (isLoading) {
+  const { data: timeLineData, isLoading: isTimelineLoading } = useQuery(
+    "timline",
+    () => {
+      return axios.get("/api/agents/timeline", {
+        params: { agentEmail: auth.user.email },
+      });
+    }
+  );
+
+  if (isLoading || isTimelineLoading) {
     return <div>Loading...</div>;
   }
 
@@ -49,7 +60,7 @@ const Dashboard = ({ auth }) => {
           </div>
         </div>
         <div className="agent-overview-graph">
-          <canvas id="myChart"></canvas>
+          <TimelineChart data={timeLineData.data.monthsArray} />
         </div>
       </div>
       <div className="portfolio-head">

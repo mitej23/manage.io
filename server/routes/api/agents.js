@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
+const { sub } = require("date-fns");
 
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
@@ -140,6 +141,86 @@ router.get("/clients", (req, res) => {
   Agent.findOne({ agentEmail }).then((agent) => {
     if (agent) {
       return res.status(200).json(agent.clients);
+    } else {
+      return res.status(404).json({ agentnotfound: "Agent not found" });
+    }
+  });
+});
+
+//utils of this router (later to be kept in a separate file)
+
+const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "June",
+  "July",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+const gapInMonthsFromToday = (min) => {
+  const todayMonth = new Date().getMonth();
+
+  let months = (new Date().getFullYear() - new Date(min).getFullYear()) * 12;
+  months -= new Date(min).getMonth();
+  months += todayMonth;
+
+  return months;
+};
+
+router.get("/timeline", (req, res) => {
+  const agentEmail = req.query.agentEmail;
+  Agent.findOne({ agentEmail }).then((agent) => {
+    if (agent) {
+      // get all funds of the client in month and year
+      const funds = [];
+      agent.clients.forEach((client) => {
+        client.funds.forEach((fund) => {
+          const tempFund = {
+            clientName: client.clientName,
+            fundName: fund.fundName,
+            amtInvested: fund.amtInvested,
+            dateOfInvestment: fund.dateOfInvestment,
+          };
+          funds.push(tempFund);
+        });
+      });
+      //fund with minimum date
+      const minDate = funds.reduce((a, b) =>
+        new Date(a.dateOfInvestment) < new Date(b.dateOfInvestment) ? a : b
+      );
+
+      //find gap of months between minDate and today
+      const gap = gapInMonthsFromToday(minDate.dateOfInvestment) + 1;
+
+      //create array of months
+      const monthsArray = [];
+      for (let i = 0; i < gap; i++) {
+        const subDate = sub(new Date(), { months: i });
+        monthsArray.push({
+          date: `${monthNames[subDate.getMonth()]}'${
+            subDate.getFullYear() % 100
+          }`,
+          totalInvested: 0,
+          investments: [],
+        });
+      }
+
+      //add total invested to each month
+      funds.forEach((fund) => {
+        const date = fund.dateOfInvestment;
+        const tempGap = gapInMonthsFromToday(date);
+        monthsArray[tempGap].totalInvested += fund.amtInvested;
+        monthsArray[tempGap].investments.push(fund);
+      });
+
+      return res.status(200).json({ monthsArray });
     } else {
       return res.status(404).json({ agentnotfound: "Agent not found" });
     }
