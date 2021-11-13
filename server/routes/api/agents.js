@@ -4,6 +4,8 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const { sub } = require("date-fns");
+const axios = require("axios");
+const moment = require("moment");
 
 // Load input validation
 const validateRegisterInput = require("../../validation/register");
@@ -246,6 +248,93 @@ router.get("/client", (req, res) => {
     }
   });
 });
+
+// To be added in seperate utils files
+
+async function fetchSingleData(fund) {
+  const response = await axios.get(`https://api.mfapi.in/mf/${fund.code}`);
+  const data = response.data.data;
+  const curData = data[0];
+  const date = new Date(fund.dateOfInvestment);
+
+  //format date into mm-dd-yyyy
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  // add 0 before single digit date
+  const formattedDate = `${day < 10 ? `0${day}` : day}-${
+    month < 10 ? `0${month}` : month
+  }-${year}`;
+
+  let timeOfInv = data.filter((element) => {
+    return element.date === formattedDate;
+  });
+
+  const percentGain =
+    ((curData.nav - timeOfInv[0].nav) / timeOfInv[0].nav) * 100;
+
+  const gain = (percentGain * fund.amtInvested) / 100;
+  const currValue = gain + fund.amtInvested;  
+
+  return {
+    fundName: fund.fundName,
+    amtInvested: fund.amtInvested,
+    code: fund.code,
+    dateOfInvestment: fund.dateOfInvestment,
+    currValue : currValue.toFixed(2),
+    gain : gain.toFixed(2),
+    percentGain : percentGain.toFixed(2),
+  };
+}
+
+//get client Detail
+router.get("/clientDetail", (req, res) => {
+  const agentEmail = req.query.agentEmail;
+  const clientEmail = req.query.clientEmail;
+  Agent.findOne({ agentEmail })
+    .then((agent) => {
+      if (agent) {
+        const client = agent.clients.find(
+          (client) => client.clientEmail === clientEmail
+        );
+        if (client) {
+          const clientName = client.clientName;
+          const funds = client.funds;
+          const data = [];
+
+          const promises = funds.map((fund) => fetchSingleData(fund));
+          Promise.all(promises).then((values) => {
+            values.forEach((value) => {
+              data.push(value);
+            });
+            return res.status(200).json({ clientName, data });
+          });
+        }
+      } else {
+        return res.status(404).json({ agentnotfound: "Agent not found" });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      return res.status(404).json({ err });
+    });
+});
+
+// if (agent) {
+//
+//   if (client) {
+//     console.log(client.funds[0]);
+//     //get funds of the agent
+//     const data = fetchSingleData(client.funds[0]).then((data) => {
+//       console.log(data);
+//     });
+//     return res.status(200).json(data);
+//   } else {
+//     return res.status(404).json({ clientnotfound: "Client not found" });
+//   }
+// } else {
+//   return res.status(404).json({ agentnotfound: "Agent not found" });
+// }
 
 //add fund to client
 

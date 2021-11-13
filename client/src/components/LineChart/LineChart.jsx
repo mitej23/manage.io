@@ -57,8 +57,7 @@ const LineChart = ({ data }) => {
             dataKey="nav"
             tickLine={false}
             axisLine={false}
-            tickCount={5}
-            width={25}
+            width={28}
             style={{
               fontSize: "12px",
             }}

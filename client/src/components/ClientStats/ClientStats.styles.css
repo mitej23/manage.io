@@ -1,0 +1,25 @@
+.container {
+  height: 100%;
+  width: 100%;
+}
+.row {
+  height: 50%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.stats-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.head {
+  margin-bottom: 10px;
+}
+
+.symbol {
+  font-size: 1.1rem;
+}

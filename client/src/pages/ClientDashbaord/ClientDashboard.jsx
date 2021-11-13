@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "./ClientDashbaord.styles.css";
 import { useHistory, Link } from "react-router-dom";
 import { useQuery } from "react-query";
@@ -7,18 +7,60 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 import BackButton from "../../components/BackButton/BackButton";
+import ClientPieChart from "../../components/PieChart/PieChart";
+import ClientStats from "../../components/ClientStats/ClientStats";
 
 const ClientDashboard = ({ auth }) => {
   const history = useHistory();
   const { pathname } = history.location;
   const lastPath = pathname.split("/").pop() + ".com";
 
-  const { data, isLoading } = useQuery(["client-data", lastPath], () => {
-    return axios.get(
-      `/api/agents/client?agentEmail=${auth.user.email}&clientEmail=${lastPath}`
-    );
-  });
-  
+  //local state
+
+  const [totalInvestment, setTotalInvestment] = React.useState(0);
+  const [currInvValue, setCurrInvValue] = React.useState(0);
+  const [totalGain, setTotalGain] = React.useState(0);
+  const [absReturnPercent, setAbsReturnPercent] = React.useState(0);
+  const [totalFunds, setTotalFunds] = React.useState(0);
+
+  const { data, isLoading, isSuccess } = useQuery(
+    ["client-data", lastPath],
+    () => {
+      return axios.get(
+        `/api/agents/clientDetail?agentEmail=${auth.user.email}&clientEmail=${lastPath}`
+      );
+    },
+    {
+      cacheTime: 1000 * 60 * 60 * 24,
+    }
+  );
+
+  useEffect(() => {
+    console.log(data);
+    if (isSuccess) {
+      if (data?.data?.data.length !== 0) {
+        let totalInv = 0;
+        let currVal = 0;
+        let totGain = 0;
+        let absReturn = 0;
+        data.data.data.forEach((element) => {
+          totalInv += element.amtInvested;
+          currVal += parseInt(element.currValue);
+          totGain += parseInt(element.gain);
+        });
+        absReturn = ((totGain / totalInv) * 100).toFixed(2);
+        setTotalInvestment(totalInv);
+        setCurrInvValue(currVal);
+        setTotalGain(totGain);
+        setAbsReturnPercent(absReturn);
+        setTotalFunds(data.data.data.length);
+      }
+    }
+
+    return () => {};
+  }, [data, isSuccess]);
+
+  console.log(totalInvestment, currInvValue, totalGain, absReturnPercent);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -32,18 +74,28 @@ const ClientDashboard = ({ auth }) => {
       </div>
       <div className="dashboard-overview-container">
         <div className="dashboard-overview-line">
-          <canvas id="myChart"></canvas>
+          <ClientStats
+            gain={totalGain}
+            totalInv={totalInvestment}
+            currInvValue={currInvValue}
+            absReturnPercent={absReturnPercent}
+            funds={totalFunds}
+          />
         </div>
         <div className="dashboard-overview-pie">
           <div className="pie-chart-text-inside">
-            <span className="pie-chart-text-total">
-              ${data.data.totalInvested}
-            </span>
+            <span className="pie-chart-text-total">${currInvValue}</span>
             {/* <Br /> */}
-            <span className="pie-chart-text-growth">+$4000</span>
+            <span className="pie-chart-text-growth">
+              {totalGain > 0 ? "+" : ""}${totalGain}
+            </span>
           </div>
 
-          <canvas id="pie-chart"></canvas>
+          <ClientPieChart
+            id="pie-chart"
+            total={totalInvestment}
+            gain={totalGain}
+          />
         </div>
       </div>
       <div className="portfolio-head">
@@ -67,7 +119,7 @@ const ClientDashboard = ({ auth }) => {
           <p className="portfolio-fund-right">Current Value</p>
         </div>
         <div className="portfolio-container-content">
-          {data.data.funds.map((fund) => {
+          {data.data.data.map((fund) => {
             return (
               <Link
                 className="portfolio-fund"
@@ -78,8 +130,13 @@ const ClientDashboard = ({ auth }) => {
                 }}
               >
                 <p className="portfolio-fund-name">{fund.fundName}</p>
-                <p className="portfolio-fund-right">+3000</p>
-                <p className="portfolio-fund-right">{fund.amtInvested}</p>
+                <p
+                  className="portfolio-fund-right"
+                  style={{ color: "#57C84D" }}
+                >
+                  {fund.gain > 0 ? "+" : ""}${`${fund.gain}`}
+                </p>
+                <p className="portfolio-fund-right">${fund.currValue}</p>
               </Link>
             );
           })}

@@ -60,7 +60,9 @@ const Dashboard = ({ auth }) => {
           </div>
         </div>
         <div className="agent-overview-graph">
-          <TimelineChart data={timeLineData.data.monthsArray} />
+          <TimelineChart
+            data={timeLineData.data.monthsArray.slice().reverse()}
+          />
         </div>
       </div>
       <div className="portfolio-head">

@@ -20,32 +20,31 @@ const TimelineChart = ({ data }) => {
             dataKey="date"
             tickLine={false}
             axisLine={false}
-            // show 4 ticks on x axis
-            tick={{ fontSize: "12px" }}
+            tick={{ fontSize: "11px" }}
           />
           <YAxis
             dataKey="totalInvested"
             tickLine={false}
             axisLine={false}
-            tickCount={5}
-            width={35}
+            width={38}
             style={{
-              fontSize: "12px",
+              fontSize: "11px",
             }}
+            tickFormatter={(number) => `$${number.toFixed(0)}`}
           />
           <Bar
             dataKey="totalInvested"
             fill="#57C84D"
             background={{ fill: "#fefefe" }}
           >
-            <LabelList
-              dataKey="totalInvested"
+            {/* <LabelList
+              // dataKey="totalInvested"
               position="top"
               style={{
                 fontSize: "8px",
               }}
-              content={<CustomLabel />}
-            />
+              // content={<CustomLabel />}
+            /> */}
           </Bar>
           <Tooltip
             cursor={{ fill: "transparent" }}
@@ -66,7 +65,7 @@ function CustomLabel({ x, y, stroke, value }) {
       dx={5}
       fill={stroke}
       textAnchor="middle"
-      fontSize={10}
+      fontSize={8}
     >
       ${value}
     </text>
