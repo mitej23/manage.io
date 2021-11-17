@@ -46,10 +46,10 @@ const Clientstats = ({
             {absReturnPercent}
           </div>
         </div>
-        {/* <div className="stats-item">
+        <div className="stats-item">
           <div className="item-head head">Total Investment</div>
           <div className="item-body"><span className="symbol">$</span>40000</div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
