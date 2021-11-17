@@ -56,7 +56,12 @@ const FundDashboard = () => {
       setCurrNavValue(data.data.data.data[0].nav);
       setPrevNavValue(data.data.data.data[1].nav);
       setOldNavValue(data.data.timeOfInv[0].nav);
-      setPercentageInc(((currNavValue - prevNavValue) / prevNavValue) * 100);
+      // remover prevnavvalue and substitute with time of investment
+      setPercentageInc(
+        ((currNavValue - parseFloat(data.data.timeOfInv[0].nav)) /
+          parseFloat(data.data.timeOfInv[0].nav)) *
+          100
+      );
       setAmtInvested(parseFloat(fund.amtInvested));
       setTotalRet((percentageInc * amtInvested) / 100);
       setThreeYearIndex(data.data.threeYearIndex);
@@ -105,8 +110,11 @@ const FundDashboard = () => {
               <p className="fund-nav-value">
                 ${parseFloat(currNavValue).toFixed(2)}
               </p>
-              <p className="fund-nav-growth">
-                + {parseFloat(yearInc).toFixed(2)} ({" "}
+              <p
+                className="fund-nav-growth"
+                style={{ color: yearInc > 0 ? "#169b00de" : "red" }}
+              >
+                {yearInc > 0 ? "+" : ""} {parseFloat(yearInc).toFixed(2)} ({" "}
                 {parseFloat(yearGrowth).toFixed(2)}% ) 1y{" "}
               </p>
             </div>
@@ -116,10 +124,21 @@ const FundDashboard = () => {
               <p>${(amtInvested + totalRet).toFixed(2)}</p>
             </div>
 
-            <div className="total-inv-growth">
-              <div className="up-arrow-icon"></div>
-              <p>{parseFloat(totalRet).toFixed(2)}</p>
-            </div>
+            {totalRet > 0 ? (
+              <div className="total-inv-growth">
+                <div className="up-arrow-icon"></div>
+                <p style={{ color: "#169b00de" }}>
+                  {parseFloat(totalRet).toFixed(2)}
+                </p>
+              </div>
+            ) : (
+              <div className="total-inv-growth">
+                <div className="bottom-arrow-icon"></div>
+                <p style={{ color: "red" }}>
+                  {parseFloat(totalRet).toFixed(2)}
+                </p>
+              </div>
+            )}
           </div>
         </div>
         <div className="fund-graph">

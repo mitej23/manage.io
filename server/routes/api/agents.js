@@ -320,23 +320,6 @@ router.get("/clientDetail", (req, res) => {
     });
 });
 
-// if (agent) {
-//
-//   if (client) {
-//     console.log(client.funds[0]);
-//     //get funds of the agent
-//     const data = fetchSingleData(client.funds[0]).then((data) => {
-//       console.log(data);
-//     });
-//     return res.status(200).json(data);
-//   } else {
-//     return res.status(404).json({ clientnotfound: "Client not found" });
-//   }
-// } else {
-//   return res.status(404).json({ agentnotfound: "Agent not found" });
-// }
-
-//add fund to client
 
 router.post("/client/fund", (req, res) => {
   const { agentEmail, clientEmail, fundName, amt, code, date } = req.body;

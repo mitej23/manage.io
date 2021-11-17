@@ -84,11 +84,17 @@ const ClientDashboard = ({ auth }) => {
         </div>
         <div className="dashboard-overview-pie">
           <div className="pie-chart-text-inside">
-            <span className="pie-chart-text-total">${currInvValue}</span>
-            {/* <Br /> */}
-            <span className="pie-chart-text-growth">
-              {totalGain > 0 ? "+" : ""}${totalGain}
-            </span>
+            {currInvValue !== 0 ? (
+              <>
+                <span className="pie-chart-text-total">${currInvValue}</span>
+                {/* <Br /> */}
+                <span className="pie-chart-text-growth">
+                  {totalGain > 0 ? "+" : ""}${totalGain}
+                </span>
+              </>
+            ) : (
+              <span className="pie-chart-text" style={{fontSize: "12px"}}>Invest Now</span>
+            )}
           </div>
 
           <ClientPieChart
@@ -132,9 +138,9 @@ const ClientDashboard = ({ auth }) => {
                 <p className="portfolio-fund-name">{fund.fundName}</p>
                 <p
                   className="portfolio-fund-right"
-                  style={{ color: "#57C84D" }}
+                  style={{ color: fund.gain > 0 ? "#57C84D" : "red" }}
                 >
-                  {fund.gain > 0 ? "+" : ""}${`${fund.gain}`}
+                  {fund.gain > 0 ? "+" : "-"}${`${Math.abs(fund.gain)}`}
                 </p>
                 <p className="portfolio-fund-right">${fund.currValue}</p>
               </Link>
