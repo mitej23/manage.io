@@ -1,0 +1,115 @@
+.landing-page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.nav-bar {
+  background-color: #f3f5f7;
+  height: 80px;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  padding: 0px 15%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.landing-container {
+  height: calc(100vh - 80px);
+  width: 100%;
+  margin-top: 80px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30vh;
+}
+
+.landing-logo > p {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 59px;
+}
+
+.landing-logo :hover {
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-family: var(--font-family);
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 67px;
+}
+
+.nav-links > p {
+  margin-left: 3rem;
+}
+
+.nav-links :hover {
+  cursor: pointer;
+}
+
+.main-text {
+  font-family: var(--font-family);
+  font-style: normal;
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 59px;
+  letter-spacing: 2px;
+  color: #000000;
+}
+
+.cursive-text {
+  font-family: "Allura", cursive;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 48px;
+  color: #0080ff;
+  margin-top: 0.5rem;
+}
+
+.landing-buttons {
+  display: flex;
+  margin-top: 0.5rem;
+}
+
+.landing-buttons > a {
+  border: var(--border);
+
+  font-family: var(--font-family);
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  padding: 7px 20px;
+  border-radius: 5px;
+
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+  color: #000000
+}
+
+.landing-buttons:hover {
+  cursor: pointer;
+}
+
+.landing-buttons :first-child {
+  margin-right: 0.5rem;
+}
+
+.landing-buttons > div:last-child {
+  margin-left: 0.5rem;
+}
+
+.slide_down:hover {
+  box-shadow: inset 0 100px 0 0 #b8b7b781;
+}
