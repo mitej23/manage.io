@@ -1,92 +1,93 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import "./Login.styles.css";
+import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { loginUser } from "../../redux/actions/auth.actions";
-import classNames from "classnames";
 
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      email: "",
-      password: "",
-      errors: {},
-    };
-  }
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.auth.isAuthenticated) {
-      nextProps.history.push("/user"); // push user to dashboard when they login
-    }
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors,
-      });
-    }
-    return null;
-  }
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-  onChange = (e) => {
-    this.setState({ [e.target.id]: e.target.value });
+import BackButton from "../../components/BackButton/BackButton";
+
+const schema = yup.object().shape({
+  email: yup.string().email("*Invalid email").required("*Email is required"),
+  password: yup.string().min(6).max(15).required("*Password is required"),
+});
+
+const Login = ({ auth, errors, loginUser }) => {
+  const history = useHistory();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitSuccessful, errors: formErrors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  const onSubmit = (data) => {
+    loginUser(data);
+    reset();
   };
 
-  onSubmit = (e) => {
-    e.preventDefault();
-    const userData = {
-      email: this.state.email,
-      password: this.state.password,
-    };
-    this.props.loginUser(userData);
-  };
-
-  componentDidMount() {
-    // If logged in and user navigates to Login page, should redirect them to dashboard
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/user");
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      history.push("/user");
     }
-  }
+  }, [auth.isAuthenticated, history]);
 
-  render() {
-    const { errors } = this.state;
-    return (
-      <div className="container">
-        <Link to="/">
-          <h1 className="text-center">home</h1>
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
+
+
+  return (
+    <div className="auth-container">
+      <BackButton text="Back" />
+      <p className="auth-title">Login</p>
+      <p>
+        Don't have an account?{" "}
+        <Link
+          to="/register"
+          style={{ color: "#0080ff", textDecoration: "underline" }}
+        >
+          Register
         </Link>
-        <h1>Login</h1>
-        <p>
-          Don't have an account? <Link to="/register">Register</Link>
-        </p>
-        <form noValidate onSubmit={this.onSubmit}>
-          <label>Email</label>
-          <input
-            onChange={this.onChange}
-            value={this.state.email}
-            error={errors.email}
-            id="email"
-            type="email"
-            className={classNames("", {
-              invalid: errors.email || errors.emailnotfound,
-            })}
-          />
-          <label>Password</label>
-          <input
-            onChange={this.onChange}
-            value={this.state.password}
-            error={errors.password}
-            id="password"
-            type="password"
-            autoComplete="true"
-            className={classNames("", {
-              invalid: errors.password || errors.passwordincorrect,
-            })}
-          />
-          <button type="submit">Login</button>
-        </form>
-      </div>
-    );
-  }
-}
+      </p>
+      <form noValidate onSubmit={handleSubmit(onSubmit)}>
+        <p className="add-title">Email</p>
+        <input
+          type="text"
+          name="email"
+          id="email"
+          className="input"
+          {...register("email")}
+        />
+        <p className="error">{formErrors?.email?.message}</p>
+        <p className="error">{errors?.email}</p>
+        <p className="add-title">Password</p>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          className="input"
+          {...register("password")}
+        />
+        <p className="error">{formErrors?.password?.message}</p>
+        <p className="error">{errors?.password}</p>
+
+        <button type="submit" id="submit">
+          Login
+        </button>
+      </form>
+    </div>
+  );
+};
 
 Login.propTypes = {
   loginUser: PropTypes.func.isRequired,
@@ -96,7 +97,7 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  errors: state.errors,
+  errors: state.error,
 });
 
 export default connect(mapStateToProps, { loginUser })(Login);

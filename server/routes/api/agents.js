@@ -61,10 +61,10 @@ router.post("/login", (req, res) => {
   const email = req.body.email;
   const password = req.body.password;
   // Find user by email
-  Agent.findOne({ email }).then((agent) => {
+  Agent.findOne({ agentEmail: email }).then((agent) => {
     // Check if agent exists
     if (!agent) {
-      return res.status(404).json({ emailnotfound: "Email not found" });
+      return res.status(401).json({ email: "Email not found" });
     }
     // Check password
     bcrypt.compare(password, agent.agentPassword).then((isMatch) => {
@@ -91,9 +91,7 @@ router.post("/login", (req, res) => {
           }
         );
       } else {
-        return res
-          .status(400)
-          .json({ passwordincorrect: "Password incorrect" });
+        return res.status(401).json({ password: "Password incorrect" });
       }
     });
   });
@@ -274,16 +272,16 @@ async function fetchSingleData(fund) {
     ((curData.nav - timeOfInv[0].nav) / timeOfInv[0].nav) * 100;
 
   const gain = (percentGain * fund.amtInvested) / 100;
-  const currValue = gain + fund.amtInvested;  
+  const currValue = gain + fund.amtInvested;
 
   return {
     fundName: fund.fundName,
     amtInvested: fund.amtInvested,
     code: fund.code,
     dateOfInvestment: fund.dateOfInvestment,
-    currValue : currValue.toFixed(2),
-    gain : gain.toFixed(2),
-    percentGain : percentGain.toFixed(2),
+    currValue: currValue.toFixed(2),
+    gain: gain.toFixed(2),
+    percentGain: percentGain.toFixed(2),
   };
 }
 
@@ -319,7 +317,6 @@ router.get("/clientDetail", (req, res) => {
       return res.status(404).json({ err });
     });
 });
-
 
 router.post("/client/fund", (req, res) => {
   const { agentEmail, clientEmail, fundName, amt, code, date } = req.body;

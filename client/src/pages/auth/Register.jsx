@@ -1,118 +1,118 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import "./Login.styles.css";
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { registerUser } from "../../redux/actions/auth.actions";
-import { withRouter } from "react-router";
 import PropTypes from "prop-types";
-import classNames from "classnames";
+import BackButton from "../../components/BackButton/BackButton";
 
-class Register extends Component {
-  constructor() {
-    super();
-    this.state = {
-      name: "",
-      email: "",
-      password: "",
-      password2: "",
-      errors: {},
-    };
-  }
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-  componentDidMount() {
-    // If logged in and user navigates to Register page, should redirect them to dashboard
-    if (this.props.auth.isAuthenticated) {
-      this.props.history.push("/user");
+const schema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  email: yup.string().email("Invalid email").required("Email is required"),
+  password: yup.string().min(6).max(15).required("Password is required"),
+  password2: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Passwords must match")
+    .required("Confirm password is required"),
+});
+
+const Register = ({ auth, errors, registerUser }) => {
+  const history = useHistory();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { isSubmitSuccessful, errors: formErrors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      history.push("/user");
     }
-  }
+  }, [auth, history]);
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.errors) {
-      this.setState({
-        errors: nextProps.errors,
-      });
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
     }
-    return null;
-  }
+  }, [isSubmitSuccessful, reset]);
 
-  onChange = (e) => {
-    this.setState({ [e.target.id]: e.target.value });
+  const onSubmit = (data) => {
+    registerUser(data, history);
+    reset();
   };
 
-  onSubmit = (e) => {
-    e.preventDefault();
-    const newUser = {
-      name: this.state.name,
-      email: this.state.email,
-      password: this.state.password,
-      password2: this.state.password2,
-    };
-    this.props.registerUser(newUser, this.props.history);
-  };
-
-  render() {
-    const { errors } = this.state;
-    return (
-      <div className="container">
-        <Link to="/">
-          <h1 className="text-center">home</h1>
+  return (
+    <div className="auth-container">
+      <BackButton text={"Back"} />
+      <p className="auth-title">Register</p>
+      <p>
+        Already have an account?{" "}
+        <Link
+          to="/login"
+          style={{ color: "#0080ff", textDecoration: "underline" }}
+        >
+          Login
         </Link>
-        <h1>Register</h1>
-        <p>
-          Already have an account? <Link to="/login">Login</Link>
-        </p>
-        <form noValidate onSubmit={this.onSubmit}>
-          <label>Name</label>
-          <input
-            onChange={this.onChange}
-            value={this.state.name}
-            error={errors.name}
-            id="name"
-            type="text"
-            className={classNames("", {
-              invalid: errors.name,
-            })}
-          />
-          <label>Email</label>
-          <input
-            onChange={this.onChange}
-            value={this.state.email}
-            error={errors.email}
-            id="email"
-            type="email"
-            className={classNames("", {
-              invalid: errors.email,
-            })}
-          />
-          <label>Password</label>
-          <input
-            onChange={this.onChange}
-            value={this.state.password}
-            error={errors.password}
-            id="password"
-            type="password"
-            autoComplete="true"
-            className={classNames("", {
-              invalid: errors.password,
-            })}
-          />
-          <label>Confirm Password</label>
-          <input
-            onChange={this.onChange}
-            value={this.state.password2}
-            error={errors.password2}
-            id="password2"
-            type="password"
-            autoComplete="true"
-            className={classNames("", {
-              invalid: errors.password2,
-            })}
-          />
-          <input type="submit" value="Sign up" />
-        </form>
-      </div>
-    );
-  }
-}
+      </p>
+      <form noValidate onSubmit={handleSubmit(onSubmit)}>
+        <p className="add-title">Name</p>
+        <input
+          id="name"
+          type="text"
+          name="name"
+          className="input"
+          {...register("name")}
+        />
+        <p className="error">{formErrors.name?.message}</p>
+        <p className="add-title">Email</p>
+        <input
+          id="email"
+          type="text"
+          name="email"
+          className="input"
+          {...register("email")}
+        />
+        <p className="error">{formErrors.email?.message}</p>
+        <p className="error">{errors?.email}</p>
+        <p className="add-title">Password</p>
+        <input
+          id="password"
+          type="password"
+          autoComplete="true"
+          name="password"
+          className="input"
+          {...register("password")}
+        />
+        <p className="error">{formErrors.password?.message}</p>
+        <p className="add-title">Confirm Password</p>
+        <input
+          id="password2"
+          type="password"
+          autoComplete="true"
+          name="password2"
+          className="input"
+          {...register("password2")}
+        />
+        {formErrors.password2?.message ? (
+          <p className="error">{formErrors.password2?.message}</p>
+        ) : null}
+
+        <br />
+        <button type="submit" id="submit">
+          Register
+        </button>
+      </form>
+    </div>
+  );
+};
 
 Register.propTypes = {
   registerUser: PropTypes.func.isRequired,
@@ -122,7 +122,7 @@ Register.propTypes = {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  errors: state.errors,
+  errors: state.error,
 });
 
-export default connect(mapStateToProps, { registerUser })(withRouter(Register));
+export default connect(mapStateToProps, { registerUser })(Register);

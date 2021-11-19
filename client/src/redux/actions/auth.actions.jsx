@@ -23,6 +23,7 @@ export const loginUser = (userData) => (dispatch) => {
     .then((res) => {
       // Save to localStorage
       // Set token to localStorage
+      console.log("login");
       const { token } = res.data;
       localStorage.setItem("jwtToken", token);
       // Set token to Auth header
@@ -32,12 +33,12 @@ export const loginUser = (userData) => (dispatch) => {
       // Set current user
       dispatch(setCurrentUser(decoded));
     })
-    .catch((err) =>
+    .catch((err) => {
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data,
-      })
-    );
+      });
+    });
 };
 
 // Set logged in user
