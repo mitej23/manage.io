@@ -4,17 +4,6 @@
   display: flex;
 }
 
-.nav-bar {
-  background-color: #f3f5f7;
-  height: 80px;
-  width: 100%;
-  position: fixed;
-  display: flex;
-  padding: 0px 15%;
-  align-items: center;
-  justify-content: space-between;
-}
-
 .landing-container {
   height: calc(100vh - 80px);
   width: 100%;
@@ -26,42 +15,10 @@
   padding-top: 30vh;
 }
 
-.landing-logo > p {
+.main-text {
   font-family: Montserrat;
   font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 59px;
-}
-
-.landing-logo :hover {
-  cursor: pointer;
-}
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  font-family: var(--font-family);
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 67px;
-}
-
-.nav-links > p {
-  margin-left: 3rem;
-}
-
-.nav-links :hover {
-  cursor: pointer;
-}
-
-.main-text {
-  font-family: var(--font-family);
-  font-style: normal;
-  font-weight: 700;
+  font-weight: 900;
   font-size: 48px;
   line-height: 59px;
   letter-spacing: 2px;
@@ -83,7 +40,7 @@
 }
 
 .landing-buttons > a {
-  border: var(--border);
+  border: 1px solid black;
 
   font-family: var(--font-family);
   font-style: normal;
@@ -95,11 +52,13 @@
   -webkit-transition: ease-out 0.4s;
   -moz-transition: ease-out 0.4s;
   transition: ease-out 0.4s;
-  color: #000000
+  color: black;
 }
 
-.landing-buttons:hover {
+.landing-buttons > a:hover {
   cursor: pointer;
+  color: white;
+  border: 1px solid #0080ff;
 }
 
 .landing-buttons :first-child {
@@ -111,5 +70,5 @@
 }
 
 .slide_down:hover {
-  box-shadow: inset 0 100px 0 0 #b8b7b781;
+  box-shadow: inset 0 100px 0 0 #0080ff;
 }
