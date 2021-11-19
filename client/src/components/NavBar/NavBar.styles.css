@@ -1,0 +1,42 @@
+.nav-bar {
+  background-color: #f3f5f7;
+  height: 80px;
+  width: 100%;
+  position: fixed;
+  display: flex;
+  padding: 0px 15%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.landing-logo > p {
+  font-family: Montserrat;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 59px;
+}
+
+.landing-logo :hover {
+  cursor: pointer;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-family: var(--font-family);
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 67px;
+}
+
+.nav-links > p {
+  margin-left: 3rem;
+}
+
+.nav-links :hover {
+  cursor: pointer;
+}
