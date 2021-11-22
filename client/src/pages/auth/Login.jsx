@@ -3,7 +3,7 @@ import "./Login.styles.css";
 import { Link, useHistory } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { loginUser } from "../../redux/actions/auth.actions";
+import { loginUser } from "../../redux/actionsCreator/auth.actionsCreator";
 
 import * as yup from "yup";
 import { useForm } from "react-hook-form";

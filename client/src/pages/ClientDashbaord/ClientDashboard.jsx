@@ -15,6 +15,8 @@ const ClientDashboard = ({ auth }) => {
   const { pathname } = history.location;
   const lastPath = pathname.split("/").pop() + ".com";
 
+  console.log(auth);
+
   //local state
 
   const [totalInvestment, setTotalInvestment] = React.useState(0);
@@ -93,7 +95,9 @@ const ClientDashboard = ({ auth }) => {
                 </span>
               </>
             ) : (
-              <span className="pie-chart-text" style={{fontSize: "12px"}}>Invest Now</span>
+              <span className="pie-chart-text" style={{ fontSize: "12px" }}>
+                Invest Now
+              </span>
             )}
           </div>
 

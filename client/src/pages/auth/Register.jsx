@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import "./Login.styles.css";
 import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { registerUser } from "../../redux/actions/auth.actions";
+import { registerUser } from "../../redux/actionsCreator/auth.actionsCreator";
 import PropTypes from "prop-types";
 import BackButton from "../../components/BackButton/BackButton";
 

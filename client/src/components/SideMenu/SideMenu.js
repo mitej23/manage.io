@@ -3,7 +3,7 @@ import "./SideMenu.styles.css";
 import { useLocation, useHistory, Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../../redux/actions/auth.actions";
+import { logoutUser } from "../../redux/actionsCreator/auth.actionsCreator";
 
 //icons
 import { MdSpaceDashboard } from "react-icons/md";

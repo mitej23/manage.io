@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
-import { logoutUser } from "../../redux/actions/auth.actions";
+import { logoutUser } from "../../redux/actionsCreator/auth.actionsCreator";
 import { Route, useRouteMatch, Switch } from "react-router-dom";
 
 //components
