@@ -30,6 +30,11 @@ type FundParam = {
   date: string;
 };
 
+type FundReturn = {
+  success?: boolean;
+  error?: string;
+};
+
 type AddFundType = {
   amount: number;
   date: string;
@@ -105,18 +110,17 @@ const AddFund = () => {
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
     async (data: AddFundType) => {
-      const response = await axios.post(
+      return await axios.post<FundParam, FundReturn>(
         "/api/agents/client/fund",
         {
           agentEmail: auth.user.email,
           clientEmail,
           fundName: data.fund.label,
           amt: data.amount,
-          code: data.fund.value,
+          code: parseInt(data.fund.value),
           date: data.date,
         }
       );
-      return response.data;
     },
     {
       onSuccess: () => {
@@ -160,7 +164,7 @@ const AddFund = () => {
     // watch fund
     const fundChange = watch("fund");
 
-    if (fundChange) {
+    if (watch("fund")) {
       axios
         .get<number, DatesResponse>(`/api/fund/dates?code=${fundChange.value}`)
         .then((res) => {
@@ -173,8 +177,6 @@ const AddFund = () => {
         });
     }
   }, [watch]);
-
-  console.log(enableDate);
 
   return (
     <div>

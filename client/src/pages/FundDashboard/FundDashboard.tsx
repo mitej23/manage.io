@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./FundDashboard.styles.css";
 
-import { useHistory, RouteComponentProps, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import BackButton from "../../components/BackButton/BackButton";
 import LineChart from "../../components/LineChart/LineChart";
 import GraphTimeLineContainer from "../../components/GraphTimelineContainer/GraphTimelineContainer";
@@ -10,14 +10,68 @@ import { useQuery } from "react-query";
 import axios from "axios";
 import moment from "moment";
 
+type FundState = {
+  amtInvested: number;
+  code: number;
+  currValue: number;
+  dateOfInvestment: string;
+  fundName: string;
+  gain: number;
+  percentGain: number;
+};
+
+type DataParams = {
+  code: string;
+  doi: string;
+};
+
+type DataResponse = {
+  data: Data;
+};
+
+type Data = {
+  data: MetaData;
+  highest: string;
+  indexOfDoi: number;
+  lowest: string;
+  threeYearIndex: number;
+  timeOfInv: Array<TimeOfInv>;
+  yearIndex: number;
+};
+
+type MetaData = {
+  meta: FundMeta;
+  data: Array<Fund>;
+  status: string;
+};
+
+type TimeOfInv = {
+  date: string;
+  nav: string;
+};
+
+type Fund = {
+  date: string;
+  nav: string;
+};
+
+type FundMeta = {
+  fund_house: string;
+  scheme_category: string;
+  scheme_code: number;
+  scheme_name: string;
+  scheme_type: string;
+};
+
 const FundDashboard = () => {
   const history = useHistory();
-  const { pathname, state } = history.location;
+  const { pathname } = history.location;
+  const { state } = useLocation<FundState>();
   const code = pathname.split("-").pop();
 
   //usestate
 
-  const [reversedData, setReversedData] = useState([]);
+  const [reversedData, setReversedData] = useState<Fund[]>([]);
   const [currNavValue, setCurrNavValue] = useState(0);
   const [prevNavValue, setPrevNavValue] = useState(0);
   const [oldNavValue, setOldNavValue] = useState(0);
@@ -33,8 +87,8 @@ const FundDashboard = () => {
 
   //react query
 
-  const { data, isLoading } = useQuery(code, () => {
-    return axios.get(
+  const { data, isLoading } = useQuery(code!, () => {
+    return axios.get<DataParams, DataResponse>(
       `/api/fund?code=${code}&doi=${moment(state.dateOfInvestment).format(
         "DD-MM-yyyy"
       )}`
@@ -43,26 +97,29 @@ const FundDashboard = () => {
 
   useEffect(() => {
     if (data && state) {
+      console.log(data);
+      console.log(state);
+
       setYearGrowth(
-        ((data.data.data.data[0].nav -
-          data.data.data.data[data.data.yearIndex].nav) /
-          data.data.data.data[data.data.yearIndex].nav) *
+        ((parseFloat(data.data.data.data[0].nav) -
+          parseFloat(data.data.data.data[data.data.yearIndex].nav)) /
+          parseFloat(data.data.data.data[data.data.yearIndex].nav)) *
           100
       );
       setYearInc(
-        data.data.data.data[0].nav -
-          data.data.data.data[data.data.yearIndex].nav
+        parseFloat(data.data.data.data[0].nav) -
+          parseFloat(data.data.data.data[data.data.yearIndex].nav)
       );
-      setCurrNavValue(data.data.data.data[0].nav);
-      setPrevNavValue(data.data.data.data[1].nav);
-      setOldNavValue(data.data.timeOfInv[0].nav);
+      setCurrNavValue(parseFloat(data.data.data.data[0].nav));
+      setPrevNavValue(parseFloat(data.data.data.data[1].nav));
+      setOldNavValue(parseFloat(data.data.timeOfInv[0].nav));
       // remover prevnavvalue and substitute with time of investment
       setPercentageInc(
         ((currNavValue - parseFloat(data.data.timeOfInv[0].nav)) /
           parseFloat(data.data.timeOfInv[0].nav)) *
           100
       );
-      setAmtInvested(parseFloat(state.amtInvested));
+      setAmtInvested(state.amtInvested);
       setTotalRet((percentageInc * amtInvested) / 100);
       setThreeYearIndex(data.data.threeYearIndex);
       setYearIndex(data.data.yearIndex);
@@ -107,15 +164,13 @@ const FundDashboard = () => {
           <div className="fund-head-left">
             <p className="fund-name">{state.fundName}</p>
             <div className="fund-nav">
-              <p className="fund-nav-value">
-                ${parseFloat(currNavValue).toFixed(2)}
-              </p>
+              <p className="fund-nav-value">${currNavValue.toFixed(2)}</p>
               <p
                 className="fund-nav-growth"
                 style={{ color: yearInc > 0 ? "#169b00de" : "red" }}
               >
-                {yearInc > 0 ? "+" : ""} {parseFloat(yearInc).toFixed(2)} ({" "}
-                {parseFloat(yearGrowth).toFixed(2)}% ) 1y{" "}
+                {yearInc > 0 ? "+" : ""} {yearInc.toFixed(2)} ({" "}
+                {yearGrowth.toFixed(2)}% ) 1y{" "}
               </p>
             </div>
           </div>
@@ -127,16 +182,12 @@ const FundDashboard = () => {
             {totalRet > 0 ? (
               <div className="total-inv-growth">
                 <div className="up-arrow-icon"></div>
-                <p style={{ color: "#169b00de" }}>
-                  {parseFloat(totalRet).toFixed(2)}
-                </p>
+                <p style={{ color: "#169b00de" }}>{totalRet.toFixed(2)}</p>
               </div>
             ) : (
               <div className="total-inv-growth">
                 <div className="bottom-arrow-icon"></div>
-                <p style={{ color: "red" }}>
-                  {parseFloat(totalRet).toFixed(2)}
-                </p>
+                <p style={{ color: "red" }}>{totalRet.toFixed(2)}</p>
               </div>
             )}
           </div>
@@ -203,7 +254,7 @@ const FundDashboard = () => {
                   <p>Net Asset Value:</p>
                 </div>
                 <div className="overview-value-right">
-                  <p>${parseFloat(currNavValue).toFixed(2)}</p>
+                  <p>${currNavValue.toFixed(2)}</p>
                 </div>
               </div>
               <div className="overview-value-container">
@@ -227,7 +278,7 @@ const FundDashboard = () => {
                   <p>At time of Inv.:</p>
                 </div>
                 <div className="overview-value-right">
-                  <p>${parseFloat(oldNavValue).toFixed(2)}</p>
+                  <p>${oldNavValue.toFixed(2)}</p>
                 </div>
               </div>
             </div>

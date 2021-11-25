@@ -81,7 +81,6 @@ const ClientDashboard = () => {
     return () => {};
   }, [data, isSuccess]);
 
-  console.log(totalInvestment, currInvValue, totalGain, absReturnPercent);
 
   if (isLoading) {
     return <div>Loading...</div>;
