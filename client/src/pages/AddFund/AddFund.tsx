@@ -3,9 +3,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import "./AddFund.styles.css";
 import BackButton from "../../components/BackButton/BackButton";
 
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
-
 // form
 import AsyncSelect from "react-select/async";
 import { Controller, useForm } from "react-hook-form";
@@ -19,6 +16,51 @@ import { useMutation, useQueryClient } from "react-query";
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { parse } from "date-fns";
+
+import { State } from "../../redux/reducers";
+import { useSelector } from "react-redux";
+// import { OptionTypeBase } from "react-select/src/types";
+
+type FundParam = {
+  agentEmail: string;
+  clientEmail: string;
+  fundName: string;
+  amt: number;
+  code: number;
+  date: string;
+};
+
+type AddFundType = {
+  amount: number;
+  date: string;
+  fund: FundSelect;
+};
+
+type FundSelect = {
+  label: string;
+  value: string;
+};
+
+type FundSelectResponse = {
+  data: FundData;
+};
+
+type FundData = {
+  data: Array<Fund>;
+};
+
+type Fund = {
+  name: string;
+  code: string;
+};
+
+type DatesResponse = {
+  data: Dates;
+};
+
+type Dates = {
+  dates: Array<string>;
+};
 
 const schema = yup.object().shape({
   fund: yup
@@ -35,7 +77,9 @@ const schema = yup.object().shape({
   date: yup.string().required("Date is required"),
 });
 
-const AddFund = ({ auth }) => {
+const AddFund = () => {
+  const auth = useSelector((state: State) => state.auth);
+
   const [incDates, setIncDates] = useState([new Date()]);
   const [enableDate, setEnableDate] = useState(false);
 
@@ -48,7 +92,7 @@ const AddFund = ({ auth }) => {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitSuccessful, errors },
+    formState: { errors },
     control,
     watch,
   } = useForm({
@@ -60,15 +104,18 @@ const AddFund = ({ auth }) => {
 
   const queryClient = useQueryClient();
   const { mutate } = useMutation(
-    async (data) => {
-      const response = await axios.post("/api/agents/client/fund", {
-        agentEmail: auth.user.email,
-        clientEmail,
-        fundName: data.fund.label,
-        amt: data.amount,
-        code: data.fund.value,
-        date: data.date,
-      });
+    async (data: AddFundType) => {
+      const response = await axios.post(
+        "/api/agents/client/fund",
+        {
+          agentEmail: auth.user.email,
+          clientEmail,
+          fundName: data.fund.label,
+          amt: data.amount,
+          code: data.fund.value,
+          date: data.date,
+        }
+      );
       return response.data;
     },
     {
@@ -80,14 +127,15 @@ const AddFund = ({ auth }) => {
     }
   );
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: AddFundType) => {
     console.log(data);
     mutate(data);
     reset();
   };
 
-  const _loadOptions = async (input, callback) => {
-    await axios(`/api/allfunds?search=${input}`)
+  const _loadOptions = async (input: string, callback: any) => {
+    await axios
+      .get<string, FundSelectResponse>(`/api/allfunds?search=${input}`)
       .then((res) =>
         callback(
           res.data.data.map((fund) => ({
@@ -96,12 +144,12 @@ const AddFund = ({ auth }) => {
           }))
         )
       )
-      .then(console.log("..fetching"));
+      .then(() => console.log("..fetching"));
   };
 
   const debouncedLoadOptions = _.debounce(_loadOptions, 300);
 
-  const getFunds = (input, callback) => {
+  const getFunds = (input: string, callback: any) => {
     if (_.isEmpty(input)) {
       return callback(null, { options: [] });
     }
@@ -113,16 +161,18 @@ const AddFund = ({ auth }) => {
     const fundChange = watch("fund");
 
     if (fundChange) {
-      axios(`/api/fund/dates?code=${fundChange.value}`).then((res) => {
-        //parse the date and set state
-        const dates = res.data.dates.map((date) =>
-          parse(date, "dd-MM-yyyy", new Date())
-        );
-        setIncDates(dates);
-        setEnableDate(true);
-      });
+      axios
+        .get<number, DatesResponse>(`/api/fund/dates?code=${fundChange.value}`)
+        .then((res) => {
+          //parse the date and set state
+          const dates = res.data.dates.map((date) =>
+            parse(date, "dd-MM-yyyy", new Date())
+          );
+          setIncDates(dates);
+          setEnableDate(true);
+        });
     }
-  }, [watch("fund")]);
+  }, [watch]);
 
   console.log(enableDate);
 
@@ -191,16 +241,10 @@ const AddFund = ({ auth }) => {
           />
           <p className="error">{errors.fund?.label.message}</p>
           <p className="add-title">Amount Invested:</p>
-          <input
-            type="number"
-            id="famount"
-            name="amount"
-            {...register("amount")}
-          />
+          <input type="number" id="famount" {...register("amount")} />
           <p className="error">{errors.amount?.message}</p>
           <p className="add-title">Date of Investment:</p>
           <Controller
-            id="date"
             name="date"
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -228,14 +272,4 @@ const AddFund = ({ auth }) => {
   );
 };
 
-AddFund.propTypes = {
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
-
-export default connect(mapStateToProps, null)(AddFund);
+export default AddFund;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./FundDashboard.styles.css";
 
-import { useHistory } from "react-router-dom";
+import { useHistory, RouteComponentProps, useLocation } from "react-router-dom";
 import BackButton from "../../components/BackButton/BackButton";
 import LineChart from "../../components/LineChart/LineChart";
 import GraphTimeLineContainer from "../../components/GraphTimelineContainer/GraphTimelineContainer";
@@ -12,7 +12,7 @@ import moment from "moment";
 
 const FundDashboard = () => {
   const history = useHistory();
-  const { pathname, fund } = history.location;
+  const { pathname, state } = history.location;
   const code = pathname.split("-").pop();
 
   //usestate
@@ -35,14 +35,14 @@ const FundDashboard = () => {
 
   const { data, isLoading } = useQuery(code, () => {
     return axios.get(
-      `/api/fund?code=${code}&doi=${moment(fund.dateOfInvestment).format(
+      `/api/fund?code=${code}&doi=${moment(state.dateOfInvestment).format(
         "DD-MM-yyyy"
       )}`
     );
   });
 
   useEffect(() => {
-    if (data && fund) {
+    if (data && state) {
       setYearGrowth(
         ((data.data.data.data[0].nav -
           data.data.data.data[data.data.yearIndex].nav) /
@@ -62,7 +62,7 @@ const FundDashboard = () => {
           parseFloat(data.data.timeOfInv[0].nav)) *
           100
       );
-      setAmtInvested(parseFloat(fund.amtInvested));
+      setAmtInvested(parseFloat(state.amtInvested));
       setTotalRet((percentageInc * amtInvested) / 100);
       setThreeYearIndex(data.data.threeYearIndex);
       setYearIndex(data.data.yearIndex);
@@ -76,7 +76,7 @@ const FundDashboard = () => {
     return () => {};
   }, [
     data,
-    fund,
+    state,
     amtInvested,
     currNavValue,
     prevNavValue,
@@ -90,7 +90,7 @@ const FundDashboard = () => {
     return <div>Loading...</div>;
   }
 
-  if (!data || !fund) {
+  if (!data || !state) {
     return (
       <div>
         <BackButton text={"Client's Dashboard"} />
@@ -99,13 +99,13 @@ const FundDashboard = () => {
     );
   }
 
-  if (data && fund) {
+  if (data && state) {
     return (
       <div>
         <BackButton text={"Client's Dashboard"} />
         <div className="fund-head-section">
           <div className="fund-head-left">
-            <p className="fund-name">{fund.fundName}</p>
+            <p className="fund-name">{state.fundName}</p>
             <div className="fund-nav">
               <p className="fund-nav-value">
                 ${parseFloat(currNavValue).toFixed(2)}
@@ -182,7 +182,7 @@ const FundDashboard = () => {
                   <p>Date of Investment:</p>
                 </div>
                 <div className="overview-value-right">
-                  <p>{`${moment(fund.dateOfInvestment).format(
+                  <p>{`${moment(state.dateOfInvestment).format(
                     "DD-MM-yyyy"
                   )}`}</p>
                 </div>

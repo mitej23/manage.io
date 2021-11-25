@@ -6,7 +6,7 @@ import {
   Tooltip,
   Bar,
   ResponsiveContainer,
-  LabelList,
+
 } from "recharts";
 
 const TimelineChart = ({ data }) => {

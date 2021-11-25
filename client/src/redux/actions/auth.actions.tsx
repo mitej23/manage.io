@@ -3,7 +3,7 @@ import { AuthActionTypes } from "../actionTypes/auth.actionTypes";
 
 interface SetCurrentUserAction {
   type: AuthActionTypes.SET_CURRENT_USER;
-  payload: User | {};
+  payload: User;
 }
 
 interface UserLoadingAction {

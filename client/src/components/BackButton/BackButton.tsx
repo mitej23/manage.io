@@ -3,7 +3,11 @@ import "./BackButton.styles.css";
 import { useLocation, Link } from "react-router-dom";
 import { FiChevronLeft } from "react-icons/fi";
 
-const BackButton = ({ text }) => {
+type Props = {
+  text: string;
+};
+
+const BackButton: React.FC<Props> = ({ text }: Props) => {
   const { pathname } = useLocation();
   const path = pathname.substr(0, pathname.lastIndexOf("/"));
 

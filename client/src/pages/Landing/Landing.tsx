@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import NavBar from "../../components/NavBar/NavBar";
 
-const Landing = () => {
+const Landing: React.FC = () => {
   return (
     <div className="landing-page">
       <NavBar />
@@ -23,6 +23,5 @@ const Landing = () => {
     </div>
   );
 };
-
 
 export default Landing;

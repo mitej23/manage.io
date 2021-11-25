@@ -1,9 +1,17 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import "./Login.styles.css";
 import { Link, useHistory } from "react-router-dom";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
-import { loginUser } from "../../redux/actionsCreator/auth.actionsCreator";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  LoginUser,
+  loginUser,
+} from "../../redux/actionsCreator/auth.actionsCreator";
+
+//type
+import { State } from "../../redux/reducers";
+
+//form
 
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -16,8 +24,14 @@ const schema = yup.object().shape({
   password: yup.string().min(6).max(15).required("*Password is required"),
 });
 
-const Login = ({ auth, errors, loginUser }) => {
+const Login: React.FC = () => {
   const history = useHistory();
+
+  //redux
+
+  const dispatch = useDispatch();
+  const auth = useSelector((state: State) => state.auth);
+  const errors = useSelector((state: State) => state.error);
 
   const {
     register,
@@ -28,8 +42,8 @@ const Login = ({ auth, errors, loginUser }) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    loginUser(data);
+  const onSubmit = (data: LoginUser) => {
+    dispatch(loginUser(data));
     reset();
   };
 
@@ -44,7 +58,6 @@ const Login = ({ auth, errors, loginUser }) => {
       reset();
     }
   }, [isSubmitSuccessful, reset]);
-
 
   return (
     <div className="auth-container">
@@ -63,7 +76,6 @@ const Login = ({ auth, errors, loginUser }) => {
         <p className="add-title">Email</p>
         <input
           type="text"
-          name="email"
           id="email"
           className="input"
           {...register("email")}
@@ -74,7 +86,6 @@ const Login = ({ auth, errors, loginUser }) => {
         <input
           id="password"
           type="password"
-          name="password"
           className="input"
           {...register("password")}
         />
@@ -89,15 +100,4 @@ const Login = ({ auth, errors, loginUser }) => {
   );
 };
 
-Login.propTypes = {
-  loginUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.error,
-});
-
-export default connect(mapStateToProps, { loginUser })(Login);
+export default Login;

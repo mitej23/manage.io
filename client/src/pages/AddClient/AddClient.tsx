@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import axios from "axios";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 import { useHistory } from "react-router-dom";
 //form
 import { useForm } from "react-hook-form";
@@ -11,7 +9,10 @@ import * as yup from "yup";
 
 import BackButton from "../../components/BackButton/BackButton";
 import "./AddClient.styles.css";
-import { FiChevronLeft } from "react-icons/fi";
+
+import { State } from "../../redux/reducers";
+import { useSelector } from "react-redux";
+import { RegisterUser } from "../../redux/actionsCreator/auth.actionsCreator";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -23,11 +24,14 @@ const schema = yup.object().shape({
     .required("Confirm password is required"),
 });
 
-const AddClient = ({ auth }) => {
+const AddClient: React.FC = () => {
+  const auth = useSelector((state: State) => state.auth);
+
   const history = useHistory();
   const queryClient = useQueryClient();
+
   const { mutate } = useMutation(
-    async (data) => {
+    async (data: RegisterUser) => {
       const response = await axios.post("/api/agents/client", {
         name: data.name,
         email: data.email,
@@ -54,13 +58,9 @@ const AddClient = ({ auth }) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: RegisterUser) => {
     mutate(data);
     reset();
-  };
-
-  const backToDashboard = () => {
-    history.push("/user");
   };
 
   useEffect(() => {
@@ -81,7 +81,6 @@ const AddClient = ({ auth }) => {
           <input
             type="text"
             className={errors.name ? "error-input" : "name"}
-            name="name"
             {...register("name")}
           />
           <p className="error">{errors.name?.message}</p>
@@ -89,7 +88,6 @@ const AddClient = ({ auth }) => {
           <input
             type="text"
             className={errors.email?.message ? "error-input" : "email"}
-            name="email"
             {...register("email")}
           />
           <p className="error">{errors.email?.message}</p>
@@ -97,7 +95,6 @@ const AddClient = ({ auth }) => {
           <input
             type="password"
             className={errors.password ? "error-input" : "password"}
-            name="password"
             {...register("password")}
           />
           <p className="error">{errors.password?.message}</p>
@@ -105,7 +102,6 @@ const AddClient = ({ auth }) => {
           <input
             type="password"
             className={errors.password2 ? "error-input" : "password"}
-            name="password2"
             {...register("password2")}
           />
           <p className="error">{errors.password2?.message}</p>
@@ -119,14 +115,4 @@ const AddClient = ({ auth }) => {
   );
 };
 
-AddClient.propTypes = {
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
-
-export default connect(mapStateToProps, null)(AddClient);
+export default AddClient;

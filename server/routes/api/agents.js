@@ -279,9 +279,9 @@ async function fetchSingleData(fund) {
     amtInvested: fund.amtInvested,
     code: fund.code,
     dateOfInvestment: fund.dateOfInvestment,
-    currValue: currValue.toFixed(2),
-    gain: gain.toFixed(2),
-    percentGain: percentGain.toFixed(2),
+    currValue: parseFloat(currValue.toFixed(2)),
+    gain: parseFloat(gain.toFixed(2)),
+    percentGain: parseFloat(percentGain.toFixed(2)),
   };
 }
 

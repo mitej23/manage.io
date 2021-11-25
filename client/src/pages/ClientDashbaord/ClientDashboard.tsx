@@ -3,19 +3,39 @@ import "./ClientDashbaord.styles.css";
 import { useHistory, Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import axios from "axios";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
 
 import BackButton from "../../components/BackButton/BackButton";
 import ClientPieChart from "../../components/PieChart/PieChart";
 import ClientStats from "../../components/ClientStats/ClientStats";
 
-const ClientDashboard = ({ auth }) => {
+import { State } from "../../redux/reducers";
+import { useSelector } from "react-redux";
+
+type ClientDetail = {
+  data: ClientDetailResponse;
+};
+
+type ClientDetailResponse = {
+  clientName: string;
+  data: Array<Fund>;
+};
+
+type Fund = {
+  fundName: string;
+  amtInvested: number;
+  code: number;
+  dateOfInvestment: string;
+  currValue: number;
+  gain: number;
+  percentGain: number;
+};
+
+const ClientDashboard = () => {
+  const auth = useSelector((state: State) => state.auth);
+
   const history = useHistory();
   const { pathname } = history.location;
   const lastPath = pathname.split("/").pop() + ".com";
-
-  console.log(auth);
 
   //local state
 
@@ -28,7 +48,7 @@ const ClientDashboard = ({ auth }) => {
   const { data, isLoading, isSuccess } = useQuery(
     ["client-data", lastPath],
     () => {
-      return axios.get(
+      return axios.get<string, ClientDetail>(
         `/api/agents/clientDetail?agentEmail=${auth.user.email}&clientEmail=${lastPath}`
       );
     },
@@ -38,19 +58,18 @@ const ClientDashboard = ({ auth }) => {
   );
 
   useEffect(() => {
-    console.log(data);
     if (isSuccess) {
-      if (data?.data?.data.length !== 0) {
+      if (data !== undefined && data?.data.data.length !== 0) {
         let totalInv = 0;
         let currVal = 0;
         let totGain = 0;
         let absReturn = 0;
-        data.data.data.forEach((element) => {
+        data?.data.data.forEach((element) => {
           totalInv += element.amtInvested;
-          currVal += parseInt(element.currValue);
-          totGain += parseInt(element.gain);
+          currVal += element.currValue;
+          totGain += element.gain;
         });
-        absReturn = ((totGain / totalInv) * 100).toFixed(2);
+        absReturn = parseInt(((totGain / totalInv) * 100).toFixed(2));
         setTotalInvestment(totalInv);
         setCurrInvValue(currVal);
         setTotalGain(totGain);
@@ -72,7 +91,7 @@ const ClientDashboard = ({ auth }) => {
     <div>
       <BackButton text={"Dashboard"} />
       <div className="container-title">
-        <p>{data.data.clientName.split(" ")[0]}'s Dashboard</p>
+        <p>{data?.data.clientName.split(" ")[0]}'s Dashboard</p>
       </div>
       <div className="dashboard-overview-container">
         <div className="dashboard-overview-line">
@@ -101,11 +120,7 @@ const ClientDashboard = ({ auth }) => {
             )}
           </div>
 
-          <ClientPieChart
-            id="pie-chart"
-            total={totalInvestment}
-            gain={totalGain}
-          />
+          <ClientPieChart total={totalInvestment} gain={totalGain} />
         </div>
       </div>
       <div className="portfolio-head">
@@ -115,7 +130,7 @@ const ClientDashboard = ({ auth }) => {
         <Link
           to={{
             pathname: `${pathname}/add-fund`,
-            state: data.data.clientName.split(" ")[0],
+            state: data?.data.clientName.split(" ")[0],
           }}
           className="add-fund-btn"
         >
@@ -129,14 +144,14 @@ const ClientDashboard = ({ auth }) => {
           <p className="portfolio-fund-right">Current Value</p>
         </div>
         <div className="portfolio-container-content">
-          {data.data.data.map((fund) => {
+          {data?.data.data.map((fund) => {
             return (
               <Link
                 className="portfolio-fund"
                 style={{ textDecoration: "none", color: "black" }}
                 to={{
                   pathname: `${pathname}/${fund.fundName}-${fund.code}`,
-                  fund: fund,
+                  state: fund,
                 }}
               >
                 <p className="portfolio-fund-name">{fund.fundName}</p>
@@ -156,14 +171,4 @@ const ClientDashboard = ({ auth }) => {
   );
 };
 
-ClientDashboard.propTypes = {
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.errors,
-});
-
-export default connect(mapStateToProps, null)(ClientDashboard);
+export default ClientDashboard;

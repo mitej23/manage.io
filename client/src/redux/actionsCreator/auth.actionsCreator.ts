@@ -11,21 +11,21 @@ import { ErrorActionTypes } from "../actionTypes/error.actionTypes";
 import { User } from "../reducers/auth.reducer";
 import { RouteComponentProps } from "react-router-dom";
 
-interface RegisterUser {
+export interface RegisterUser {
   name: string;
   email: string;
   password: string;
   password2: string;
 }
 
-interface LoginUser {
+export interface LoginUser {
   email: string;
   password: string;
 }
 
 interface token {
   success: boolean;
-  token : string;
+  token: string;
 }
 
 // Register User
@@ -71,7 +71,7 @@ export const loginUser =
   };
 
 // Set logged in user
-export const setCurrentUser = (decoded: {} | User) => {
+export const setCurrentUser = (decoded: User ) => {
   return {
     type: AuthActionTypes.SET_CURRENT_USER,
     payload: decoded,

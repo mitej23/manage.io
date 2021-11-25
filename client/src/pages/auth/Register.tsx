@@ -1,10 +1,14 @@
 import { useEffect } from "react";
 import "./Login.styles.css";
 import { Link, useHistory } from "react-router-dom";
-import { connect } from "react-redux";
-import { registerUser } from "../../redux/actionsCreator/auth.actionsCreator";
-import PropTypes from "prop-types";
+import {
+  RegisterUser,
+  registerUser,
+} from "../../redux/actionsCreator/auth.actionsCreator";
 import BackButton from "../../components/BackButton/BackButton";
+
+import { useDispatch, useSelector } from "react-redux";
+import { State } from "../../redux/reducers";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,8 +24,12 @@ const schema = yup.object().shape({
     .required("Confirm password is required"),
 });
 
-const Register = ({ auth, errors, registerUser }) => {
+const Register = () => {
   const history = useHistory();
+
+  const dispatch = useDispatch();
+  const auth = useSelector((state: State) => state.auth);
+  const errors = useSelector((state: State) => state.error);
 
   const {
     register,
@@ -44,8 +52,8 @@ const Register = ({ auth, errors, registerUser }) => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  const onSubmit = (data) => {
-    registerUser(data, history);
+  const onSubmit = (data: RegisterUser) => {
+    dispatch(registerUser(data, history));
     reset();
   };
 
@@ -64,19 +72,12 @@ const Register = ({ auth, errors, registerUser }) => {
       </p>
       <form noValidate onSubmit={handleSubmit(onSubmit)}>
         <p className="add-title">Name</p>
-        <input
-          id="name"
-          type="text"
-          name="name"
-          className="input"
-          {...register("name")}
-        />
+        <input id="name" type="text" className="input" {...register("name")} />
         <p className="error">{formErrors.name?.message}</p>
         <p className="add-title">Email</p>
         <input
           id="email"
           type="text"
-          name="email"
           className="input"
           {...register("email")}
         />
@@ -87,7 +88,6 @@ const Register = ({ auth, errors, registerUser }) => {
           id="password"
           type="password"
           autoComplete="true"
-          name="password"
           className="input"
           {...register("password")}
         />
@@ -97,7 +97,6 @@ const Register = ({ auth, errors, registerUser }) => {
           id="password2"
           type="password"
           autoComplete="true"
-          name="password2"
           className="input"
           {...register("password2")}
         />
@@ -114,15 +113,4 @@ const Register = ({ auth, errors, registerUser }) => {
   );
 };
 
-Register.propTypes = {
-  registerUser: PropTypes.func.isRequired,
-  auth: PropTypes.object.isRequired,
-  errors: PropTypes.object,
-};
-
-const mapStateToProps = (state) => ({
-  auth: state.auth,
-  errors: state.error,
-});
-
-export default connect(mapStateToProps, { registerUser })(Register);
+export default Register;

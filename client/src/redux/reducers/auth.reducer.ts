@@ -4,22 +4,22 @@ import isEmpty from "is-empty";
 
 const initialState = {
   isAuthenticated: false,
-  user: {},
+  user: {} ,
   loading: false,
 };
 
 type AuthState = {
   isAuthenticated: boolean;
-  user: User | {};
+  user: User;
   loading: boolean;
 };
 
 export type User = {
-  id: string;
-  name: string;
-  email: string;
-  exp: number;
-  iat: number;
+  id?: string;
+  name?: string;
+  email?: string;
+  exp?: number;
+  iat?: number;
 };
 
 export default function authReducer(

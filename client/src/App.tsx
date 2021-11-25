@@ -1,11 +1,14 @@
-import React from "react";
+import React, { FC } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 //auth
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import { setCurrentUser, logoutUser } from "./redux/actions/auth.actions";
+import {
+  setCurrentUser,
+  logoutUser,
+} from "./redux/actionsCreator/auth.actionsCreator";
 
 //redux
 import { Provider } from "react-redux";
@@ -50,7 +53,7 @@ export const queryClient = new QueryClient({
   },
 });
 
-function App() {
+const App: FC = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
@@ -69,6 +72,6 @@ function App() {
       </QueryClientProvider>
     </Provider>
   );
-}
+};
 
 export default App;

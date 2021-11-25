@@ -1,7 +1,7 @@
 import React from "react";
 import "./NavBar.styles.css";
 
-const NavBar = () => {
+const NavBar: React.FC = () => {
   return (
     <div className="nav-bar">
       <div className="landing-logo">
