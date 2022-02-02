@@ -77,7 +77,7 @@ const AddClient: React.FC = () => {
           <p>Add Client</p>
         </div>
         <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
-          <p className="add-title">Fund Name:</p>
+          <p className="add-title">Client Name:</p>
           <input
             type="text"
             className={errors.name ? "error-input" : "name"}

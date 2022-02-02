@@ -176,7 +176,7 @@ const AddFund = () => {
           setEnableDate(true);
         });
     }
-  }, [watch]);
+  }, [watch("fund")]);
 
   return (
     <div>

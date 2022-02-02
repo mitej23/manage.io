@@ -24,7 +24,7 @@ router.post("/register", (req, res) => {
   if (!isValid) {
     return res.status(400).json(errors);
   }
-  Agent.findOne({ email: req.body.email }).then((agent) => {
+  Agent.findOne({ agentEmail: req.body.email }).then((agent) => {
     if (agent) {
       return res.status(400).json({ email: "Email already exists" });
     } else {
@@ -191,6 +191,13 @@ router.get("/timeline", (req, res) => {
           funds.push(tempFund);
         });
       });
+
+      if (funds.length === 0) {
+        return res.status(200).json({ monthsArray: [] });
+      }
+
+      //
+
       //fund with minimum date
       const minDate = funds.reduce((a, b) =>
         new Date(a.dateOfInvestment) < new Date(b.dateOfInvestment) ? a : b

@@ -6,7 +6,6 @@ import {
   Tooltip,
   Bar,
   ResponsiveContainer,
-
 } from "recharts";
 
 const TimelineChart = ({ data }) => {
@@ -15,29 +14,30 @@ const TimelineChart = ({ data }) => {
   return (
     <>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data}>
-          <XAxis
-            dataKey="date"
-            tickLine={false}
-            axisLine={false}
-            tick={{ fontSize: "11px" }}
-          />
-          <YAxis
-            dataKey="totalInvested"
-            tickLine={false}
-            axisLine={false}
-            width={38}
-            style={{
-              fontSize: "11px",
-            }}
-            tickFormatter={(number) => `$${number.toFixed(0)}`}
-          />
-          <Bar
-            dataKey="totalInvested"
-            fill="#57C84D"
-            background={{ fill: "#fefefe" }}
-          >
-            {/* <LabelList
+        {data.length > 0 ? (
+          <BarChart data={data}>
+            <XAxis
+              dataKey="date"
+              tickLine={false}
+              axisLine={false}
+              tick={{ fontSize: "11px" }}
+            />
+            <YAxis
+              dataKey="totalInvested"
+              tickLine={false}
+              axisLine={false}
+              width={38}
+              style={{
+                fontSize: "11px",
+              }}
+              tickFormatter={(number) => `$${number.toFixed(0)}`}
+            />
+            <Bar
+              dataKey="totalInvested"
+              fill="#57C84D"
+              background={{ fill: "#fefefe" }}
+            >
+              {/* <LabelList
               // dataKey="totalInvested"
               position="top"
               style={{
@@ -45,12 +45,17 @@ const TimelineChart = ({ data }) => {
               }}
               // content={<CustomLabel />}
             /> */}
-          </Bar>
-          <Tooltip
-            cursor={{ fill: "transparent" }}
-            content={<CustomTooltip data={data} />}
-          />
-        </BarChart>
+            </Bar>
+            <Tooltip
+              cursor={{ fill: "transparent" }}
+              content={<CustomTooltip data={data} />}
+            />
+          </BarChart>
+        ) : (
+          <div className="no-data">
+            <p>No data to display</p>
+          </div>
+        )}
       </ResponsiveContainer>
     </>
   );
