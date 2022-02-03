@@ -10,4 +10,4 @@ Client Dashboard
 ![](/client/images/client_dashboard.png)
 
 Fund Dashboard
-![](/client/images/fund_dashboard.png)
+![](/client/images/fund_dashbaord.png)
