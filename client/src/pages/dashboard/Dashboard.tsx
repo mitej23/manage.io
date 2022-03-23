@@ -139,6 +139,7 @@ const Dashboard: React.FC = () => {
                     state: { client: client },
                   }}
                   style={{ textDecoration: "none" }}
+                  key={client._id}
                 >
                   <div key={client.clientEmail} className="agent-portfolio">
                     <p className="agent-portfolio-name">{client.clientName}</p>
