@@ -71,23 +71,21 @@ router.get("/", async (req, res) => {
           return element.date === doi;
         });
 
-        return res
-          .status(200)
-          .json({
-            data,
-            lowest,
-            highest,
-            timeOfInv,
-            yearIndex,
-            threeYearIndex,
-            indexOfDoi,
-          });
+        return res.status(200).json({
+          data,
+          lowest,
+          highest,
+          timeOfInv,
+          yearIndex,
+          threeYearIndex,
+          indexOfDoi,
+        });
       })
       .catch((err) => {
         console.log(err);
       });
   } catch (error) {
-    res.status(400).json({ success: false, err: error });
+    res.status(500).json({ success: false, err: "Server Error" });
   }
 });
 
@@ -109,7 +107,7 @@ router.get("/dates", async (req, res) => {
         console.log(err);
       });
   } catch (error) {
-    res.status(400).json({ success: false, err: error });
+    res.status(500).json({ success: false, err: "Server Error" });
   }
 });
 

@@ -14,7 +14,7 @@ router.get("/", async (req, res) => {
     }).limit(50);
     res.status(200).json({ success: true, data: result });
   } catch (err) {
-    res.status(400).json({ success: false, err: error });
+    res.status(500).json({ success: false, err: "Server Error" });
   }
 });
 

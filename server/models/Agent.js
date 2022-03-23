@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+
 const FundSchema = new mongoose.Schema({
   fundName: {
     type: String,

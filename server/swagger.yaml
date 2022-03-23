@@ -1,0 +1,20 @@
+openapi: 3.0.0
+info:
+  title: Manage.io
+  description: This is a Mutual Fund Management System.
+  version: 1.0.1
+
+servers:
+  - url: http://localhost:5000/api
+    description: localhost version of the application
+  - url: https://localhost:5000/api
+    description: this is just a dummpy api is it doesn't works
+
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+    BearerAuth:
+      type: http
+      scheme: bearer

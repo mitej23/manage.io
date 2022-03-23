@@ -1,32 +1,43 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const app = express();
-const passport = require("passport");
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("swagger.yaml");
+const morgan = require("morgan");
 
+//environment variables
+require("dotenv").config();
+const { PORT } = process.env;
+
+// importing middleware
+const auth = require("./middleware/auth");
+
+//importing routes
 const agents = require("./routes/api/agents");
 const allfunds = require("./routes/api/allfunds");
 const fund = require("./routes/api/fund");
 
+// regular middlewares
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// DB Config
-const db = require("./config/keys").MONGOURI;
+// morgan middleware
+app.use(morgan("tiny"));
 
 // Connect to MongoDB
-mongoose
-  .connect(db, { useNewUrlParser: true })
-  .then(() => console.log("MongoDB successfully connected"))
-  .catch((err) => console.log(err));
+require("./config/database").connect();
 
-// Passport middleware
-app.use(passport.initialize());
-// Passport config
-require("./config/passport")(passport);
+// home route
+app.get("/", (req, res) => res.send("Welcome to the Fund Management System"));
+
+//swagger middleware
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 // Routes
 app.use("/api/agents", agents);
-app.use("/api/allfunds", allfunds);
-app.use("/api/fund", fund);
+app.use("/api/allfunds", auth, allfunds);
+app.use("/api/fund", auth, fund);
 
-const port = process.env.PORT || 5000; // process.env.port is Heroku's port if you choose to deploy the app there
+const port = PORT || 5000; // process.env.port is Heroku's port if you choose to deploy the app there
 app.listen(port, () => console.log(`Server up and running on port ${port} !`));
