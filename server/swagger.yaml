@@ -7,14 +7,512 @@ info:
 servers:
   - url: http://localhost:5000/api
     description: localhost version of the application
-  - url: https://localhost:5000/api
-    description: this is just a dummpy api is it doesn't works
 
 components:
+  responses:
+    AccessDenied:
+      description: Access denied
+      content:
+        application/json:
+          schema:
+            type:
+            properties:
+              error:
+                type: string
+    NotFoundError:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+    ServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
   securitySchemes:
-    BasicAuth:
-      type: http
-      scheme: basic
-    BearerAuth:
+    bearerAuth:
       type: http
       scheme: bearer
+      bearerFormat: JWT
+
+paths:
+  /agents/register:
+    post:
+      tags:
+        - Authentication
+      summary: returns user data
+      requestBody:
+        description: User data
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                password2:
+                  type: string
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  agentName:
+                    type: string
+                  agentEmail:
+                    type: string
+        400:
+          description: Wrong input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  password:
+                    type: string
+                  password2:
+                    type: string
+        409:
+          description: User already exists
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+        500:
+          $ref: "#/components/responses/ServerError"
+  /agents/login:
+    post:
+      tags:
+        - Authentication
+      summary: return a jwt token containing the user data
+      requestBody:
+        description: User data
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  token:
+                    type: string
+        401:
+          description: Incorrect email-id/password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  email:
+                    type: string
+                  password:
+                    type: string
+        500:
+          $ref: "#/components/responses/ServerError"
+  /agents/client:
+    post:
+      tags:
+        - Client
+      summary: Adds a client to the agent
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: User data
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                agentEmail:
+                  type: string
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                password2:
+                  type: string
+      responses:
+        201:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        400:
+          description: Wrong input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  password:
+                    type: string
+                  password2:
+                    type: string
+        401:
+          $ref: "#/components/responses/AccessDenied"
+        409:
+          $ref: "#/components/responses/NotFoundError"
+        500:
+          $ref: "#/components/responses/ServerError"
+    get:
+      tags:
+        - Client
+      summary: returns a client from agent
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: agentEmail
+          schema:
+            type: string
+          description: Email ID of agent
+        - in: query
+          name: clientEmail
+          schema:
+            type: string
+          description: Email ID of client
+      responses:
+        201:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clientName:
+                    type: string
+                  clientEmail:
+                    type: string
+                  totalInvested:
+                    type: number
+                  _id:
+                    type: string
+                  funds:
+                    type: array
+                    items:
+                      properties:
+                        fundName:
+                          type: string
+                        amtInvested:
+                          type: number
+                        code:
+                          type: number
+                        dateOfInvestment:
+                          type: string
+                        _id:
+                          type: string
+        409:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        401:
+          $ref: "#/components/responses/AccessDenied"
+        500:
+          $ref: "#/components/responses/ServerError"
+  /agents/clients:
+    get:
+      tags:
+        - Client
+      summary: returns all clients from agent
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: agentEmail
+          schema:
+            type: string
+          description: Email ID of agent
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    clientName:
+                      type: string
+                    clientEmail:
+                      type: string
+                    totalInvested:
+                      type: number
+                    _id:
+                      type: string
+                    funds:
+                      type: array
+                      items:
+                        properties:
+                          fundName:
+                            type: string
+                          amtInvested:
+                            type: number
+                          code:
+                            type: number
+                          dateOfInvestment:
+                            type: string
+                          _id:
+                            type: string
+        409:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        401:
+          $ref: "#/components/responses/AccessDenied"
+        500:
+          $ref: "#/components/responses/ServerError"
+  /agents/timeline:
+    get:
+      tags:
+        - Client
+      summary: returns a investment history of the agent
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: agentEmail
+          schema:
+            type: string
+          description: Email ID of agent
+      responses:
+        201:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  monthsArray:
+                    type: array
+                    items:
+                      properties:
+                        date:
+                          type: string
+                        totalInvested:
+                          type: number
+                        investments:
+                          type: array
+                          items:
+                            properties:
+                              clientName:
+                                type: string
+                              fundName:
+                                type: string
+                              amtInvested:
+                                type: number
+                              dateOfInvestment:
+                                type: string
+        409:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        401:
+          $ref: "#/components/responses/AccessDenied"
+        500:
+          $ref: "#/components/responses/ServerError"
+  /agents/clientDetails:
+    get:
+      tags:
+        - Client
+      summary: returns a client details from agent
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: agentEmail
+          schema:
+            type: string
+          description: Email ID of agent
+        - in: query
+          name: clientEmail
+          schema:
+            type: string
+          description: Email ID of client
+      responses:
+        201:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  clientName:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      properties:
+                        fundName:
+                          type: string
+                        amtInvested:
+                          type: number
+                        code:
+                          type: number
+                        dateOfInvestment:
+                          type: string
+                        currValue:
+                          type: string
+                        gain:
+                          type: number
+                        percentGain:
+                          type: number
+        409:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+        401:
+          $ref: "#/components/responses/AccessDenied"
+        500:
+          $ref: "#/components/responses/ServerError"
+  /agents/client/fund:
+    get:
+      tags:
+        - Client
+      summary: returns all funds of the client from agent
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: query
+          name: agentEmail
+          schema:
+            type: string
+          description: Email ID of agent
+        - in: query
+          name: clientEmail
+          schema:
+            type: string
+          description: Email ID of client
+      responses:
+        200:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    fundName:
+                      type: string
+                    amtInvested:
+                      type: number
+                    code:
+                      type: number
+                    dateOfInvestment:
+                      type: string
+                    _id:
+                      type: string
+        404:
+          $ref: "#/components/responses/NotFoundError"
+        401:
+          $ref: "#/components/responses/AccessDenied"
+        500:
+          $ref: "#/components/responses/ServerError"
+    post:
+      tags:
+        - Client
+      summary: Adds a funds to the specific of the agent
+      security:
+        - bearerAuth: []
+      requestBody:
+        description: User data
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                agentEmail:
+                  type: string
+                clientEmail:
+                  type: string
+                fundName:
+                  type: string
+                amt:
+                  type: number
+                code:
+                  type: number
+                date:
+                  type: string
+      responses:
+        201:
+          description: All good success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  message:
+                    type: string
+        401:
+          $ref: "#/components/responses/AccessDenied"
+        404:
+          $ref: "#/components/responses/NotFoundError"
+        500:
+          $ref: "#/components/responses/ServerError"

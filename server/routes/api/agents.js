@@ -25,7 +25,7 @@ router.post("/register", registerAgent);
 router.post("/login", loginAgent);
 
 // add client to agent
-router.post("/client", auth, addClient);
+router.post("/client", auth, addClient).get("/client", auth, getOneClient);
 
 // get clients of the agent
 router.get("/clients", auth, getAllClients);
@@ -33,16 +33,12 @@ router.get("/clients", auth, getAllClients);
 // get investment history i.e timeline of investment
 router.get("/timeline", auth, getTimeline);
 
-//get client of the agent
-router.get("/client", auth, getOneClient);
-
 //get client Detail
 router.get("/clientDetail", auth, getClientDetails);
 
-// add fund to client
-router.post("/client/fund", auth, addFundToClient);
-
-//get funds of the client
-router.get("/client/fund", auth, getAllFundsOfClient);
+// add fund to client and get all funds of client
+router
+  .post("/client/fund", auth, addFundToClient)
+  .get("/client/fund", auth, getAllFundsOfClient);
 
 module.exports = router;

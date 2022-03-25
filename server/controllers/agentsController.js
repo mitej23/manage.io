@@ -24,7 +24,7 @@ exports.registerAgent = (req, res) => {
     }
     Agent.findOne({ agentEmail: req.body.email }).then((agent) => {
       if (agent) {
-        return res.status(400).json({ email: "Email already exists" });
+        return res.status(409).json({ email: "Email already exists" });
       } else {
         const newAgent = new Agent({
           agentName: req.body.name,
@@ -38,7 +38,12 @@ exports.registerAgent = (req, res) => {
             newAgent.agentPassword = hash;
             newAgent
               .save()
-              .then((agent) => res.json(agent))
+              .then((agent) =>
+                res.status(200).json({
+                  agentName: agent.agentName,
+                  agentEmail: agent.agentEmail,
+                })
+              )
               .catch((err) => console.log(err));
           });
         });
@@ -135,7 +140,7 @@ exports.addClient = (req, res) => {
           message: "User has been added to database",
         });
       } else {
-        return res.status(404).json({ agentnotfound: "Agent not found" });
+        return res.status(409).json({ error: "Agent not found" });
       }
     });
   } catch (err) {
@@ -152,7 +157,7 @@ exports.getAllClients = (req, res) => {
       if (agent) {
         return res.status(200).json(agent.clients);
       } else {
-        return res.status(404).json({ agentnotfound: "Agent not found" });
+        return res.status(409).json({ error: "Agent not found" });
       }
     });
   } catch (err) {
@@ -243,7 +248,7 @@ exports.getTimeline = (req, res) => {
 
         return res.status(200).json({ monthsArray });
       } else {
-        return res.status(404).json({ agentnotfound: "Agent not found" });
+        return res.status(409).json({ error: "Agent not found" });
       }
     });
   } catch (err) {
@@ -265,10 +270,10 @@ exports.getOneClient = (req, res) => {
         if (client) {
           return res.status(200).json(client);
         } else {
-          return res.status(404).json({ clientnotfound: "Client not found" });
+          return res.status(409).json({ error: "Client not found" });
         }
       } else {
-        return res.status(404).json({ agentnotfound: "Agent not found" });
+        return res.status(409).json({ error: "Agent not found" });
       }
     });
   } catch (err) {
@@ -366,7 +371,11 @@ exports.addFundToClient = (req, res) => {
             });
           }
         });
-        agent.save().then(() => res.json({ success: true }));
+        agent
+          .save()
+          .then(() =>
+            res.json({ success: true, message: "Fund added succesfully" })
+          );
       } else {
         return res.status(404).json({ error: "Agent not found" });
       }

@@ -27,6 +27,7 @@ const ClientSchema = new mongoose.Schema({
   clientPassword: {
     type: String,
     required: true,
+    select: false,
   },
   clientEmail: {
     type: String,
@@ -46,6 +47,7 @@ const AgentSchema = new mongoose.Schema({
   agentPassword: {
     type: String,
     required: true,
+    select: false,
   },
   agentEmail: {
     type: String,
