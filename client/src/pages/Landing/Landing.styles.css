@@ -5,9 +5,7 @@
 }
 
 .landing-container {
-  height: calc(100vh - 80px);
   width: 100%;
-  margin-top: 80px;
 
   display: flex;
   flex-direction: column;
@@ -15,60 +13,55 @@
   padding-top: 30vh;
 }
 
-.main-text {
-  font-family: Montserrat;
+.top-text {
+  font-family: var(--font-family);
   font-style: normal;
-  font-weight: 900;
-  font-size: 48px;
-  line-height: 59px;
-  letter-spacing: 2px;
-  color: #000000;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #8b8b8b;
+  margin-bottom: 10px;
 }
 
-.cursive-text {
-  font-family: "Allura", cursive;
+.main-text {
+  font-family: var(--font-family);
   font-style: normal;
-  font-weight: normal;
-  font-size: 48px;
-  color: #0080ff;
-  margin-top: 0.5rem;
+  font-weight: 900;
+  font-size: 4.5rem;
+  line-height: 1;
+  letter-spacing: 2px;
+  color: #000000;
+  text-align: center;
+  width: 90%;
+}
+
+.text-highlight {
+  background: #9dc4ff;
+  background: -webkit-linear-gradient(to top right, #9dc4ff 41%, #174994 70%);
+  background: -moz-linear-gradient(to top right, #9dc4ff 41%, #174994 70%);
+  background: linear-gradient(to top right, #9dc4ff 41%, #174994 70%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .landing-buttons {
   display: flex;
   margin-top: 0.5rem;
+  background-color: #3b82f6;
+  border-radius: 5px;
+  margin-top: 50px;
 }
 
 .landing-buttons > a {
-  border: 1px solid black;
-
   font-family: var(--font-family);
   font-style: normal;
-  font-weight: normal;
+  font-weight: 600;
   font-size: 18px;
-  padding: 7px 20px;
-  border-radius: 5px;
+  padding: 16px 2.125rem;
 
-  -webkit-transition: ease-out 0.4s;
-  -moz-transition: ease-out 0.4s;
-  transition: ease-out 0.4s;
-  color: black;
+  color: #ffffff;
 }
 
-.landing-buttons > a:hover {
-  cursor: pointer;
-  color: white;
-  border: 1px solid #0080ff;
-}
-
-.landing-buttons :first-child {
-  margin-right: 0.5rem;
-}
-
-.landing-buttons > div:last-child {
-  margin-left: 0.5rem;
-}
-
-.slide_down:hover {
-  box-shadow: inset 0 100px 0 0 #0080ff;
+.right-arrow-icon {
+  margin-bottom: -3px;
+  margin-left: 5px;
 }

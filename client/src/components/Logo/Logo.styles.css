@@ -1,0 +1,21 @@
+.landing-logo {
+  display: flex;
+  align-content: center;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: center;
+}
+
+.landing-logo > p {
+  font-family: "Inter", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 59px;
+  margin-left: 15px;
+  color: #3b3f42;
+}
+
+.landing-logo :hover {
+  cursor: pointer;
+}
