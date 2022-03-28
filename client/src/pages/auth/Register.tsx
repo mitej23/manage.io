@@ -105,7 +105,7 @@ const Register = () => {
         ) : null}
 
         <br />
-        <button type="submit" id="submit">
+        <button type="submit" className="login-btn">
           Register
         </button>
       </form>

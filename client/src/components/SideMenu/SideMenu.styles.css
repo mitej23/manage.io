@@ -1,5 +1,5 @@
 :root {
-  --font-family: Cairo;
+  --font-family: "Inter", sans-serif;
   --font-style: normal;
   --title-font-weight: 700;
   --title-font-size: 1.25rem;
@@ -8,7 +8,7 @@
 
 .side-bar {
   height: 100vh;
-  background: #f3f5f7;
+  background: #f6f6fb;
   width: 15rem;
   display: flex;
   flex-direction: column;
@@ -17,22 +17,18 @@
   z-index: 1; /* Stay on top */
   top: 0; /* Stay at the top */
   left: 0;
-  border-right: 1px solid #cdcdcd;
+  border-right: var(--border);
 }
 
 .logo {
-  margin-left: 10%;
-  margin-top: 50px;
-  font-family: Montserrat;
-  font-style: normal;
-  font-weight: 500;
-  font-size: 36px;
-  line-height: 59px;
+  margin-top: 4rem;
+  margin-left: 15%;
+  margin-bottom: 2rem;
 }
 
 .sm-logo {
   display: none;
-  font-family: Montserrat;
+  font-family: var(--font-family);
   font-style: normal;
   font-weight: 500;
 }
@@ -47,9 +43,8 @@
   width: 100%;
   position: relative;
   /* background: red; */
-  padding-left: 10%;
   margin-top: 25px;
-  font-family: Cairo;
+  font-family: var(--font-family);
   font-style: normal;
   font-weight: normal;
   font-size: 18px;
@@ -62,39 +57,47 @@
 
 a {
   text-decoration: none;
-  color: rgba(0, 0, 0, 0.35);
+  color: #2b2f42;
 }
 
 .links {
   display: flex;
   align-items: center;
+  padding-left: 15%;
+  font-size: 16px;
 }
 
 .links > .fas {
   margin-right: 0.6875rem;
-}
-
-.links#highlight {
-  color: #181818;
+  font-size: 18px;
 }
 
 .links:last-of-type {
   margin-top: auto;
 }
 
-.links:hover {
-  cursor: pointer;
+.links#highlight {
+  background: linear-gradient(
+    270deg,
+    rgba(113, 102, 249, 0.1) 0%,
+    rgba(113, 102, 249, 0.07) 100%
+  );
 }
 
-.links:hover::before {
+.links#highlight::after {
   content: "";
   position: absolute;
-  height: 57px;
-  margin-top: 5px;
-  width: 90%;
+  right: 0;
+  width: 5px;
+  height: 67px;
+  background: #174994;
+  z-index: -1;
+  border-radius: 4px 0 0px 4px;
+}
+
+.links:not(#highlight):hover {
+  cursor: pointer;
   background: rgba(223, 223, 223, 0.22);
-  margin-left: -5%;
-  border-radius: 8px;
 }
 
 #exit {
@@ -107,17 +110,6 @@ a {
 
 a #exit:hover::before {
   background-color: rgb(238, 147, 147, 0.22);
-}
-
-#highlight::before {
-  content: "";
-  position: absolute;
-  height: 57px;
-  margin-top: 5px;
-  background: rgba(192, 192, 192, 0.22);
-  width: 90%;
-  margin-left: -5%;
-  border-radius: 8px;
 }
 
 @media all and (max-width: 1100px) {

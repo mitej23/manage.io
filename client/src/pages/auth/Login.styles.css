@@ -1,14 +1,21 @@
 .auth-container {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  margin: 20vh auto;
-  align-content: flex-start;
+  height: max-content;
   width: max-content;
   padding: 2rem;
+  padding-right: 4.5rem;
   border-radius: 10px;
-  border: 1px solid #ccc;
+  border: var(--border);
+  box-shadow: var(--shadow);
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  margin: auto;
 }
 
 .auth-title {
@@ -16,6 +23,7 @@
   font-style: var(--font-style);
   font-size: 1.5rem;
   font-weight: 800;
+  margin: 1rem 0rem;
 }
 
 p {
@@ -23,18 +31,19 @@ p {
   font-style: var(--font-style);
 }
 
-#submit {
-  width: 5rem;
-  height: 2rem;
+.login-btn {
+  font-family: var(--font-family);
+  font-style: var(--font-family);
+  font-weight: 600;
   border: var(--border);
   border-radius: 5px;
-  margin-top: 1.5rem;
-  overflow: hidden;
-  background: #f3f5f7;
-  position: relative;
+  padding: 0.75rem 1rem;
+  margin-top: 1.75rem;
+  background-color: var(--primary-purple);
+  color: white;
 }
 
-#submit:hover {
+.login-btn:hover {
   cursor: pointer;
   /* background: #e8e9eb; */
 }

@@ -1,9 +1,16 @@
 :root {
-  --font-family: Cairo;
-  --font-style: normal;
+  --font-family: "Inter", sans-serif;
   --title-font-weight: 700;
-  --title-font-size: 1.25rem;
-  --border: 1px solid #cbcbcb;
+  --title-font-size: 1.5rem;
+  --normal-font-size: 1.25rem;
+  --small-font-size: 1rem;
+  --border: 1px solid #f6f6fb;
+  --spacing: 1.25rem;
+  --bg-main: #f6f6fb;
+  --primary-purple: #7166f9;
+  --main-blue: #94bcf8;
+  --shadow: 0 4px 6px 0 var(--bg-main), 0 2px 4px -2px var(--bg-main);
+  --shadow-small: 0 2px 3px 0 var(--bg-main), 0 1px 2px -1px var(--bg-main);
 }
 
 .content {

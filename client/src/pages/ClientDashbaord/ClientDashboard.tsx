@@ -81,7 +81,6 @@ const ClientDashboard = () => {
     return () => {};
   }, [data, isSuccess]);
 
-
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -90,7 +89,9 @@ const ClientDashboard = () => {
     <div>
       <BackButton text={"Dashboard"} />
       <div className="container-title">
-        <p>{data?.data.clientName.split(" ")[0]}'s Dashboard</p>
+        <p className="heading">
+          {data?.data.clientName.split(" ")[0]}'s Dashboard
+        </p>
       </div>
       <div className="dashboard-overview-container">
         <div className="dashboard-overview-line">
@@ -123,9 +124,7 @@ const ClientDashboard = () => {
         </div>
       </div>
       <div className="portfolio-head">
-        <div className="container-title portfolio-title">
-          <p>Portfolio</p>
-        </div>
+        <p className="heading">Portfolio</p>
         <Link
           to={{
             pathname: `${pathname}/add-fund`,

@@ -1,19 +1,22 @@
 .add-title {
   font-family: var(--font-family);
   font-style: var(--font-style);
-  font-size: 0.8rem;
-  margin-top: 0.6rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: grey;
 }
 
 input {
   height: 2rem;
-  width: 20rem;
+  width: 12rem;
   font-family: var(--font-family);
   font-style: var(--font-style);
   font-size: 1.0125rem;
-  padding: 1rem 0.5rem;
+  padding: 1.25rem 0.75rem;
   border: var(--border);
   border-radius: 5px;
+  box-shadow: var(--shadow-small);
 }
 
 input:-webkit-autofill,
@@ -23,14 +26,9 @@ input:-webkit-autofill:active {
   transition: background-color 50000s ease-in-out 0s, color 5000s ease-in-out 0s;
 }
 
-.email,
-.password {
-  width: 15rem;
-}
-
-.error-input {
-  border: 1px solid red;
-  background-color: rgb(250, 241, 241);
+#famount,
+#fdate {
+  width: 12rem;
 }
 
 textarea:focus,
@@ -38,22 +36,16 @@ input:focus {
   outline: none;
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-#submit {
-  width: 5rem;
-  height: 2rem;
+.add-client-btn {
+  font-family: var(--font-family);
+  font-style: var(--font-family);
+  font-weight: 600;
   border: var(--border);
   border-radius: 5px;
-  margin-top: 1.5rem;
-  overflow: hidden;
-  /* background: #f3f5f7; */
-  cursor: pointer;
-  position: relative;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  background-color: var(--primary-purple);
+  color: white;
 }
 
 .error {
@@ -61,7 +53,7 @@ input::-webkit-inner-spin-button {
   font-size: 0.8rem;
   margin-top: 0.3rem;
 }
-#submit:hover {
+
+.add-client-btn:hover {
   cursor: pointer;
-  /* background: #e8e9eb; */
 }

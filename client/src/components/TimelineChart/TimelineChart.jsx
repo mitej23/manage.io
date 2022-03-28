@@ -13,7 +13,7 @@ const TimelineChart = ({ data }) => {
 
   return (
     <>
-      <ResponsiveContainer width="100%" height="100%">
+      <ResponsiveContainer width="98%" height="90%">
         {data.length > 0 ? (
           <BarChart data={data}>
             <XAxis
@@ -27,7 +27,7 @@ const TimelineChart = ({ data }) => {
               tickLine={false}
               axisLine={false}
               width={38}
-              style={{
+              tick={{
                 fontSize: "11px",
               }}
               tickFormatter={(number) => `$${number.toFixed(0)}`}

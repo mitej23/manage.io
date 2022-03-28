@@ -3,7 +3,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 const ClientPieChart = ({ total, gain }) => {
   const data = [
-    { value: total, name: "Total", color: "#7FB3F0" },
+    { value: total, name: "Total", color: "#7166f9" },
     { value: gain, name: "Gain", color: "#57C84D" },
   ];
   return (

@@ -1,8 +1,10 @@
 .add-title {
   font-family: var(--font-family);
   font-style: var(--font-style);
-  font-size: 0.8rem;
-  margin-top: 0.6rem;
+  font-size: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  color: grey;
 }
 
 input {
@@ -11,9 +13,10 @@ input {
   font-family: var(--font-family);
   font-style: var(--font-style);
   font-size: 1.0125rem;
-  padding: 1rem 0.75rem;
+  padding: 1.25rem 0.75rem;
   border: var(--border);
   border-radius: 5px;
+  box-shadow: var(--shadow-small);
 }
 
 input:-webkit-autofill,
@@ -39,30 +42,25 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
-#submit {
-  width: 5rem;
-  height: 2rem;
+.react-datepicker__input-container input {
+  background-color: white;
+}
+
+.add-fund-btn {
+  font-family: var(--font-family);
+  font-style: var(--font-family);
+  font-weight: 600;
   border: var(--border);
   border-radius: 5px;
-  margin-top: 1.5rem;
-  overflow: hidden;
-  /* background: #f3f5f7; */
-  cursor: pointer;
-  position: relative;
-  transition: background 400ms;
+  padding: 0.75rem 1rem;
+  margin-top: 0.5rem;
+  background-color: var(--primary-purple);
+  color: white;
 }
 
-#submit:hover {
+.add-fund-btn:hover {
   cursor: pointer;
   /* background: #e8e9eb; */
-}
-
-span.ripple {
-  position: absolute; /* The absolute position we mentioned earlier */
-  border-radius: 50%;
-  transform: scale(0);
-  animation: ripple 600ms linear;
-  background-color: rgba(255, 255, 255, 0.7);
 }
 
 .error {

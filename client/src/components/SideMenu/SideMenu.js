@@ -11,6 +11,7 @@ import { FaCalculator } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { BsBookmarksFill } from "react-icons/bs";
+import Logo from "../Logo/Logo";
 
 const SideMenu = ({ logoutUser }) => {
   const { pathname } = useLocation();
@@ -28,9 +29,10 @@ const SideMenu = ({ logoutUser }) => {
 
   return (
     <div className="side-bar">
-      <p className="logo" onClick={backToDashboard}>
-        Manage.io
-      </p>
+      <div className="logo">
+        <Logo onClick={backToDashboard}>Manage.io</Logo>
+      </div>
+
       <div className="sm-logo" onClick={backToDashboard}>
         <p className="sm-logo-text">Manage</p>
         <p className="sm-logo-text">.io</p>

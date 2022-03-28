@@ -5,15 +5,15 @@
 }
 
 .graph-timeline-conatiner > p {
-  font-family: Cairo;
-  font-style: normal;
+  font-family: var(--font-family);
+  font-style: var(--font-style);
   font-weight: 400;
   font-size: 14px;
   margin-left: 1rem;
-  padding-left: 0.45rem;
-  padding-right: 0.45rem;
+  padding: 0.5rem;
   border: 1px solid transparent;
   border-radius: 4px;
+  background-color: var(--bg-main);
 }
 
 .graph-timeline-conatiner > p {
@@ -21,5 +21,6 @@
 }
 
 .graph-timeline-conatiner > p.select {
-  border: 1px solid #cbcbcb;
+  background-color: var(--primary-purple);
+  color: white;
 }

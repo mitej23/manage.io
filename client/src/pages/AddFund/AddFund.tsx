@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import "./AddFund.styles.css";
 import BackButton from "../../components/BackButton/BackButton";
@@ -183,7 +183,7 @@ const AddFund = () => {
       <div className="add-fund">
         <BackButton text={`${state}'s Dashboard`} />
         <div className="container-title">
-          <p>Add Fund</p>
+          <p className="heading">Add Fund</p>
         </div>
         <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <p className="add-title">Fund Name:</p>
@@ -198,6 +198,11 @@ const AddFund = () => {
                   IndicatorSeparator: () => null,
                 }}
                 styles={{
+                  control: (base) => ({
+                    ...base,
+                    borderColor: "var(--bg-main)",
+                    boxShadow: "var(--shadow-small)",
+                  }),
                   singleValue: (base, state) => ({
                     ...base,
                     color: state.selectProps.menuIsOpen
@@ -243,7 +248,12 @@ const AddFund = () => {
           />
           <p className="error">{errors.fund?.label.message}</p>
           <p className="add-title">Amount Invested:</p>
-          <input type="number" id="famount" {...register("amount")} />
+          <input
+            type="number"
+            id="famount"
+            {...register("amount")}
+            placeholder="0"
+          />
           <p className="error">{errors.amount?.message}</p>
           <p className="add-title">Date of Investment:</p>
           <Controller
@@ -265,9 +275,11 @@ const AddFund = () => {
 
           <p className="error">{errors.date?.message}</p>
           <br />
-          <button type="submit" id="submit" className="btn">
-            Add Fund
-          </button>
+          <div>
+            <button className="add-fund-btn" type="submit">
+              Add Fund
+            </button>
+          </div>
         </form>
       </div>
     </div>

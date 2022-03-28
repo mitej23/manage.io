@@ -1,66 +1,133 @@
-:root {
-  --font-family: Cairo;
-  --font-style: normal;
-  --title-font-weight: 700;
-  --title-font-size: 1.25rem;
-  --border: 1px solid #cbcbcb;
+.welcome {
+  font-family: var(--font-family);
+  font-style: var(--font-family);
+  font-size: var(--small-font-size);
 }
 
-.container-title {
+.overview-header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.25rem;
+}
+
+.overview-range-container {
+  display: flex;
+  justify-content: flex-end;
+  width: 40%;
+}
+
+.overview-range {
+  font-family: var(--font-family);
+  font-style: var(--font-family);
+  font-size: 14px;
+  font-weight: var(--title-font-weight);
+  color: black;
+  margin-left: 1.5rem;
+  background: #f6f6fb;
+  padding: 12px 28px;
+  border-radius: 36px;
+}
+
+.overview-range.highlighted {
+  background-color: var(--primary-purple);
+  color: white;
+}
+
+.overview-range:hover {
+  cursor: pointer;
+}
+
+.heading {
   font-family: var(--font-family);
   font-style: var(--font-family);
   font-weight: var(--title-font-weight);
   font-size: var(--title-font-size);
-  margin-top: 1rem;
 }
 
 .agent-overview-container {
-  height: 35vh;
+  height: 400px;
   width: 100%;
-  /* background-color: rebeccapurple; */
   display: flex;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .agent-overview-stats,
 .agent-overview-graph {
   height: 100%;
-  border: var(--border);
   border-radius: 0.6rem;
 }
 
 .agent-overview-stats {
+  justify-content: space-between;
+}
+
+.agent-overview-graph {
+  width: 77%;
+  padding: 2rem;
+  margin-right: 3%;
+  border-radius: 2rem;
+  border: var(--border);
+  box-shadow: var(--shadow);
+}
+
+.agent-overview-graph-header-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.agent-overview-graph-header {
+  font-size: var(--normal-font-size);
+  font-weight: 600;
+}
+
+.agent-overview-graph-value {
+  font-weight: 600;
+  font-size: var(--title-font-size);
+  color: var(--primary-purple);
+}
+
+.recharts-responsive-container {
+  height: 90%;
+}
+
+.agent-overview-stats {
   width: 20%;
-  margin-right: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-between;
   font-family: var(--font-family);
   font-style: var(--font-style);
 }
 
 .agent-stats-item-container {
+  height: 190px;
+  width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  justify-content: space-between;
+  border: var(--border);
+  border-radius: 2rem;
+  background-color: var(--bg-main);
+  padding: 2rem;
 }
 
 .item-head {
+  font-family: var(--font-family);
+  font-style: var(--font-style);
   font-weight: 600;
   font-size: 0.75rem;
 }
 
 .item-body {
   font-size: 28px;
-  margin-top: -0.5rem;
-}
-
-.agent-overview-graph {
-  width: 80%;
-  margin-left: 1rem;
-  padding: 1rem;
-  padding-bottom: 0rem;
+  font-family: var(--font-family);
+  font-style: var(--font-style);
+  color: var(--primary-purple);
+  margin-bottom: 10px;
+  font-weight: 700;
 }
 
 .agent-portfolio-container {
@@ -71,13 +138,14 @@
   margin-top: 1rem;
 }
 
-.portfolio-head {
+.client-container-head {
   height: 2.5rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .agent-portfolio-container-head {
@@ -89,13 +157,16 @@
   color: #cbcbcb;
 }
 
-.add-fund-btn {
+.add-client-btn {
   font-family: var(--font-family);
   font-style: var(--font-family);
+  font-weight: 600;
+  font-size: 0.75rem;
   border: var(--border);
   border-radius: 5px;
-  padding: 0.15rem 0.3rem;
-  color: black;
+  padding: 0.75rem 1rem;
+  background: var(--primary-purple);
+  color: white;
 }
 
 .add-fund-btn:hover {
@@ -125,6 +196,7 @@
   height: 2.5rem;
   width: 100%;
   display: flex;
+  align-items: center;
   font-size: 1.125rem;
   color: black;
 }
@@ -134,13 +206,16 @@
   cursor: pointer;
 }
 
-.agent-portfolio:hover::before {
-  content: "";
-  position: absolute;
-  height: 2.5rem;
-  width: 102%;
-  border: var(--border);
-  margin-left: -10px;
-  margin-top: -5px;
-  border-radius: 5px;
+#dollar-sign {
+  font-size: var(--font-style);
+  font-family: var(--font-family);
+  font-size: var(--title-font-size);
+  font-weight: 900;
+
+  background: #9dc4ff;
+  background: -webkit-linear-gradient(to top right, #9dc4ff 10%, #174994 44%);
+  background: -moz-linear-gradient(to top right, #9dc4ff 10%, #174994 44%);
+  background: linear-gradient(to top right, #9dc4ff 10%, #174994 44%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

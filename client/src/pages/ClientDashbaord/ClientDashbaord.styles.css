@@ -1,8 +1,8 @@
 .dashboard-overview-container {
-  height: 35vh;
+  height: 300px;
   width: 100%;
   display: flex;
-  margin-top: 1rem;
+  margin-top: 1.75rem;
 }
 
 .dashboard-overview-line {
@@ -12,6 +12,7 @@
   border: var(--border);
   border-radius: 0.6rem;
   padding: 1rem;
+  box-shadow: var(--shadow);
 }
 
 .dashboard-overview-pie {
@@ -22,6 +23,7 @@
   border-radius: 0.6rem;
   position: relative;
   padding: 1rem;
+  box-shadow: var(--shadow);
 }
 
 .pie-chart-text-inside {
@@ -42,12 +44,14 @@
 
 .pie-chart-text-total {
   font-size: 1.25rem;
+  font-weight: 700;
   /* color:#7FB3F0; */
 }
 
 .pie-chart-text-growth {
   color: #57c84d;
   font-size: 0.8rem;
+  font-weight: 500;
 }
 
 .portfolio-head {
@@ -56,19 +60,23 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 1rem;
+  margin-top: 1.75rem;
 }
 
-.container-title.portfolio-title {
-  margin-top: 0px;
+.container-title {
+  margin-top: 2rem;
 }
 
 .add-fund-btn {
   font-family: var(--font-family);
   font-style: var(--font-family);
+  font-weight: 600;
+  font-size: 0.75rem;
   border: var(--border);
   border-radius: 5px;
-  padding: 0.15rem 0.3rem;
+  padding: 0.75rem 1rem;
+  background: var(--primary-purple);
+  color: white;
 }
 
 .add-fund-btn:hover {
@@ -80,7 +88,7 @@
   width: 100%;
   font-family: var(--font-family);
   font-style: var(--font-family);
-  margin-top: 1rem;
+  margin-top: 1.75rem;
 }
 
 .portfolio-container-head {
@@ -95,6 +103,7 @@
 .portfolio-container-content {
   margin-top: 0.5rem;
   position: relative;
+  align-items: center;
 }
 
 .portfolio-fund-name {
@@ -116,6 +125,7 @@
   width: 100%;
   display: flex;
   font-size: 1.125rem;
+  align-items: center;
 }
 
 .portfolio-fund:hover {

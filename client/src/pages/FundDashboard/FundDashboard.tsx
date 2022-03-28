@@ -207,7 +207,7 @@ const FundDashboard = () => {
           }}
         />
         <div className="fund-overview">
-          <div className="fund-overview-title">
+          <div className="heading">
             <p>Overview</p>
           </div>
           <div className="fund-overview-content">

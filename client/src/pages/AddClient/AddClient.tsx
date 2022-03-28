@@ -74,7 +74,7 @@ const AddClient: React.FC = () => {
       <div className="add-fund">
         <BackButton text={"Dashboard"} />
         <div className="container-title">
-          <p>Add Client</p>
+          <p className="heading">Add Client</p>
         </div>
         <form autoComplete="off" onSubmit={handleSubmit(onSubmit)}>
           <p className="add-title">Client Name:</p>
@@ -106,7 +106,7 @@ const AddClient: React.FC = () => {
           />
           <p className="error">{errors.password2?.message}</p>
           <br />
-          <button type="submit" id="submit" className="btn">
+          <button type="submit" className="add-client-btn">
             Add Client
           </button>
         </form>

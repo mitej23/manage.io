@@ -18,13 +18,13 @@
 .fund-name,
 .fund-total-inv,
 .total-inv-growth {
-  font-family: Cairo;
-  font-style: normal;
-  font-weight: 400;
+  font-family: var(--font-family);
+  font-style: var(--font-style);
+  font-weight: 600;
   font-size: 24px;
   overflow-wrap: break-word;
   line-height: 32px;
-
+  margin-bottom: 0.5rem;
   display: flex;
   height: fit-content;
   align-items: center;
@@ -69,8 +69,8 @@
 
 .fund-nav {
   display: flex;
-  font-family: Cairo;
-  font-style: normal;
+  font-family: var(--font-family);
+  font-style: var(--font-style);
   font-weight: 400;
   align-items: center;
 }
@@ -85,32 +85,6 @@
   margin-left: 3px;
 }
 
-.graph-timeline-conatiner {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1.75rem;
-}
-
-.graph-timeline-conatiner > p {
-  font-family: Cairo;
-  font-style: normal;
-  font-weight: 400;
-  font-size: 14px;
-  margin-left: 1rem;
-  padding-left: 0.45rem;
-  padding-right: 0.45rem;
-  border: 1px solid transparent;
-  border-radius: 4px;
-}
-
-.graph-timeline-conatiner > p {
-  cursor: pointer;
-}
-
-.graph-timeline-conatiner > p.select {
-  border: 1px solid #cbcbcb;
-}
-
 .fund-overview {
   height: max-content;
   width: 100%;
@@ -119,8 +93,8 @@
 
 .fund-overview-title > p {
   display: flex;
-  font-family: Cairo;
-  font-style: normal;
+  font-family: var(--font-family);
+  font-style: var(--font-style);
   font-weight: 700;
   font-size: 1.25rem;
 }
@@ -128,7 +102,7 @@
 .fund-overview-content {
   display: flex;
   height: max-content;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
 
 .fund-overview-left {
@@ -137,8 +111,8 @@
 }
 
 .fund-overview-divider {
-  width: 0.25px;
-  background-color: #cbcbcb;
+  width: 1px;
+  background-color: var(--bg-main);
 }
 
 .fund-overview-right {
@@ -151,13 +125,14 @@
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  align-items: center;
 }
 
 .overview-value-left > p,
 .overview-value-right > p {
-  font-family: Cairo;
-  font-style: normal;
+  font-family: var(--font-family);
+  font-style: var(--font-style);
   font-size: 1.125rem;
 }
 

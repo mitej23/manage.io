@@ -68,7 +68,7 @@ const App: FC = () => {
             </Switch>
           </div>
         </Router>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </Provider>
   );
