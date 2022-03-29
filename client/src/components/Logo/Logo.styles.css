@@ -19,3 +19,9 @@
 .landing-logo :hover {
   cursor: pointer;
 }
+
+@media all and (max-width: 1100px) {
+  .logo-text {
+    display: none;
+  }
+}

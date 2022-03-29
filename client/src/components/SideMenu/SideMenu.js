@@ -11,12 +11,13 @@ import { FaCalculator } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { BsBookmarksFill } from "react-icons/bs";
+import { GrSearch } from "react-icons/gr";
 import Logo from "../Logo/Logo";
 
 const SideMenu = ({ logoutUser }) => {
   const { pathname } = useLocation();
   const history = useHistory();
-  const strings = ["Wish", "Calc", "Settings"];
+  const strings = ["Wish", "Calc", "Settings", "search"];
 
   const onLogoutClick = (e) => {
     e.preventDefault();
@@ -32,12 +33,16 @@ const SideMenu = ({ logoutUser }) => {
       <div className="logo">
         <Logo onClick={backToDashboard}>Manage.io</Logo>
       </div>
-
-      <div className="sm-logo" onClick={backToDashboard}>
-        <p className="sm-logo-text">Manage</p>
-        <p className="sm-logo-text">.io</p>
-      </div>
       <div className="menu-links">
+        <Link to="/user/search" style={{ textDecoration: "none" }}>
+          <p
+            className="links"
+            id={pathname.includes("search") ? "highlight" : ""}
+          >
+            <GrSearch className="fas" />
+            Search
+          </p>
+        </Link>
         <Link to="/user" style={{ textDecoration: "none" }}>
           <p
             className="links"

@@ -31,7 +31,7 @@ const Logo = () => {
           </linearGradient>
         </defs>
       </svg>
-      <p>Manage.io</p>
+      <p className="logo-text">Manage.io</p>
     </div>
   );
 };

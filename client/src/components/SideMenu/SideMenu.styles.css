@@ -117,30 +117,18 @@ a #exit:hover::before {
     margin-right: 0px;
   }
 
+  .logo {
+    margin-left: 0;
+  }
+
   .side-bar {
     max-width: 85px;
+    align-items: center;
   }
 
   .content {
     width: calc(100% - 85px);
     margin-left: 85px;
-  }
-
-  .logo {
-    display: none;
-  }
-
-  .sm-logo {
-    display: flex;
-    font-size: 1.1rem;
-    flex-direction: column;
-    justify-content: center;
-    margin-top: 35px;
-  }
-
-  .sm-logo-text {
-    display: flex;
-    justify-content: center;
   }
 
   .menu-links {
@@ -154,7 +142,9 @@ a #exit:hover::before {
     flex-wrap: wrap;
     align-content: center;
     align-items: center;
-    font-size: 14px;
+    font-size: 12px;
+    padding-top: 15px;
+    padding-left: 0;
   }
 
   .fas {
@@ -172,15 +162,20 @@ a #exit:hover::before {
     font-size: 18px;
   }
 
-  #highlight::before {
-    height: 75px;
-    margin-top: -10px;
-    margin-left: 0%;
+  .links#highlight {
+    background: none;
+    color: whitesmoke;
   }
 
-  .links:hover::before {
-    height: 75px;
-    margin-top: -10px;
-    margin-left: 0%;
+  .links#highlight::after {
+    content: "";
+    position: absolute;
+    margin-top: -13px;
+    left: 4px;
+    width: 90%;
+    height: 85px;
+    background: #204c9e;
+    z-index: -1;
+    border-radius: 4px;
   }
 }
