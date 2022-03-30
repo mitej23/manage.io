@@ -9,8 +9,6 @@ const Calculator = () => {
   const [rate, setRate] = useState(1);
   const [years, setYears] = useState(1);
 
-  throw new Error("Error");
-
   return (
     <div>
       <p className="heading">Calculator</p>

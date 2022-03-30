@@ -24,7 +24,9 @@ import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import User from "./pages/User/User";
-import { ErrorBoundary } from "./pages/ErrorBoundary";
+
+import { ErrorBoundary } from "react-error-boundary";
+import FallBack from "./pages/FallBack";
 
 //Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -54,13 +56,17 @@ export const queryClient = new QueryClient({
   },
 });
 
+const ErrorHandler = (error: Error, info: { componentStack: string }) => {
+  console.log("Loggin", error, info);
+};
+
 const App: FC = () => {
   return (
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <Router>
           <div className="App">
-            <ErrorBoundary>
+            <ErrorBoundary FallbackComponent={FallBack} onError={ErrorHandler}>
               <Route exact path="/" component={Landing} />
               <Route exact path="/register" component={Register} />
               <Route exact path="/login" component={Login} />
