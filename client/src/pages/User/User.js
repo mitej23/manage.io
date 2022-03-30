@@ -14,9 +14,11 @@ import ClientDashboard from "../ClientDashbaord/ClientDashboard";
 import FundDashboard from "../FundDashboard/FundDashboard";
 import AddClient from "../AddClient/AddClient";
 import AddFund from "../AddFund/AddFund";
+import Search from "../Search/Search";
 
 //styles
 import "./User.styles.css";
+
 //import PrivateRoute from "../../components/private-route/PrivateRoute";
 
 const User = () => {
@@ -27,6 +29,7 @@ const User = () => {
         <Layout {...props}>
           <Switch>
             <Route exact path={path} component={Dashboard} />
+            <Route exact path={`${path}/search`} component={Search} />
             <Route exact path={`${path}/Calculator`} component={Calculator} />
             <Route exact path={`${path}/Wishlist`} component={Wishlist} />
             <Route exact path={`${path}/Settings`} component={Settings} />

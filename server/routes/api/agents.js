@@ -41,4 +41,5 @@ router
   .post("/client/fund", auth, addFundToClient)
   .get("/client/fund", auth, getAllFundsOfClient);
 
+
 module.exports = router;

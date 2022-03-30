@@ -24,6 +24,7 @@ import Register from "./pages/auth/Register";
 import Login from "./pages/auth/Login";
 import PrivateRoute from "./components/private-route/PrivateRoute";
 import User from "./pages/User/User";
+import { ErrorBoundary } from "./pages/ErrorBoundary";
 
 //Check for token to keep user logged in
 if (localStorage.jwtToken) {
@@ -59,13 +60,15 @@ const App: FC = () => {
       <QueryClientProvider client={queryClient}>
         <Router>
           <div className="App">
-            <Route exact path="/" component={Landing} />
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Switch>
-              {/* Don't add exact because it has nested routes, it won't work if we add path to this. */}
-              <PrivateRoute path="/user" component={User} />
-            </Switch>
+            <ErrorBoundary>
+              <Route exact path="/" component={Landing} />
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Switch>
+                {/* Don't add exact because it has nested routes, it won't work if we add path to this. */}
+                <PrivateRoute path="/user" component={User} />
+              </Switch>
+            </ErrorBoundary>
           </div>
         </Router>
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}

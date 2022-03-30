@@ -11,7 +11,7 @@ import { FaCalculator } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { FiLogOut } from "react-icons/fi";
 import { BsBookmarksFill } from "react-icons/bs";
-import { GrSearch } from "react-icons/gr";
+import { HiSearch } from "react-icons/hi";
 import Logo from "../Logo/Logo";
 
 const SideMenu = ({ logoutUser }) => {
@@ -39,7 +39,7 @@ const SideMenu = ({ logoutUser }) => {
             className="links"
             id={pathname.includes("search") ? "highlight" : ""}
           >
-            <GrSearch className="fas" />
+            <HiSearch className="fas" />
             Search
           </p>
         </Link>

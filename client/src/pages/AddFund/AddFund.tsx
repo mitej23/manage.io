@@ -202,12 +202,38 @@ const AddFund = () => {
                     ...base,
                     borderColor: "var(--bg-main)",
                     boxShadow: "var(--shadow-small)",
+                    "&:hover": {
+                      borderColor: "var(--bg-main)",
+                      cursor: "text",
+                    },
+                  }),
+                  menu: (base) => ({
+                    ...base,
+                    border: "var(--border)",
+                    boxShadow: "var(--shadow)",
+                  }),
+                  menuList: (base) => ({
+                    ...base,
+                    "::-webkit-scrollbar": {
+                      width: "9px",
+                      borderRadius: "4px",
+                    },
+                    "::-webkit-scrollbar-track": {
+                      width: "0px",
+                      background: "transparent",
+                    },
+                    "::-webkit-scrollbar-thumb": {
+                      background: "#888",
+                      borderRadius: "4px",
+                    },
+                    "::-webkit-scrollbar-thumb:hover": {
+                      background: "#555",
+                      borderRadius: "4px",
+                    },
                   }),
                   singleValue: (base, state) => ({
                     ...base,
-                    color: state.selectProps.menuIsOpen
-                      ? "#cdcdcd"
-                      : base.color,
+                    color: state.selectProps.menuIsOpen ? "black" : base.color,
                   }),
                   container: (base) => ({
                     ...base,
@@ -229,11 +255,11 @@ const AddFund = () => {
                   option: (base, { isFocused, isSelected }) => ({
                     ...base,
                     background: isSelected
-                      ? "rgba(192, 192, 192, 0.22)"
+                      ? "#7166f9"
                       : isFocused
-                      ? "rgba(233, 233, 233, 0.22)"
+                      ? "#e9e8fb"
                       : "",
-                    color: isSelected ? "#000" : "#000",
+                    color: isSelected ? "white" : "#000",
                     width: "97%",
                     marginLeft: "0.5%",
                     borderRadius: "5px",
