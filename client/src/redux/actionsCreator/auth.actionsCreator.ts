@@ -5,7 +5,7 @@ import jwt_decode from "jwt-decode";
 //types
 import { Dispatch } from "redux";
 import { AuthActions } from "../actions/auth.actions";
-import { GetErrorAction } from "../actions/error.actions";
+import { ErrorActions } from "../actions/error.actions";
 import { AuthActionTypes } from "../actionTypes/auth.actionTypes";
 import { ErrorActionTypes } from "../actionTypes/error.actionTypes";
 import { User } from "../reducers/auth.reducer";
@@ -31,7 +31,7 @@ interface token {
 // Register User
 export const registerUser =
   (userData: RegisterUser, history: RouteComponentProps["history"]) =>
-  (dispatch: Dispatch<GetErrorAction>) => {
+  (dispatch: Dispatch<ErrorActions>) => {
     axios
       .post("/api/agents/register", userData)
       .then((res) => history.push("/login")) // re-direct to login on successful register
@@ -45,14 +45,13 @@ export const registerUser =
 
 // Login - get user token
 export const loginUser =
-  (userData: LoginUser) =>
-  (dispatch: Dispatch<AuthActions | GetErrorAction>) => {
+  (userData: LoginUser) => (dispatch: Dispatch<AuthActions | ErrorActions>) => {
     axios
       .post<token>("/api/agents/login", userData)
       .then((res) => {
         // Save to localStorage
         // Set token to localStorage
-        console.log("login");
+        console.log("logged in from actions");
         const { token } = res.data;
         localStorage.setItem("jwtToken", token);
         // Set token to Auth header
@@ -61,17 +60,19 @@ export const loginUser =
         const decoded = jwt_decode(token);
         // Set current user
         dispatch(setCurrentUser(decoded as User));
+        return true;
       })
       .catch((err) => {
         dispatch({
           type: ErrorActionTypes.GET_ERRORS,
           payload: err.response.data,
         });
+        return true;
       });
   };
 
 // Set logged in user
-export const setCurrentUser = (decoded: User ) => {
+export const setCurrentUser = (decoded: User) => {
   return {
     type: AuthActionTypes.SET_CURRENT_USER,
     payload: decoded,

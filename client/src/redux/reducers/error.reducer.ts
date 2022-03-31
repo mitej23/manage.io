@@ -1,5 +1,5 @@
-import { GetErrorAction } from "../actions/error.actions";
-import {ErrorActionTypes} from "../actionTypes/error.actionTypes"
+import { ErrorActions } from "../actions/error.actions";
+import { ErrorActionTypes } from "../actionTypes/error.actionTypes";
 const initialState = {};
 
 export interface ErrorState {
@@ -9,11 +9,13 @@ export interface ErrorState {
 
 export default function errorReducer(
   state: ErrorState = initialState,
-  action: GetErrorAction
+  action: ErrorActions
 ) {
   switch (action.type) {
     case ErrorActionTypes.GET_ERRORS:
       return action.payload;
+    case ErrorActionTypes.CLEAR_ERRORS:
+      return {};
     default:
       return state;
   }

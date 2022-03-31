@@ -9,6 +9,7 @@ import BackButton from "../../components/BackButton/BackButton";
 
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../redux/reducers";
+import { ErrorActionTypes } from "../../redux/actionTypes/error.actionTypes";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -35,10 +36,16 @@ const Register = () => {
     register,
     handleSubmit,
     reset,
-    formState: { isSubmitSuccessful, errors: formErrors },
+    formState: { errors: formErrors },
   } = useForm({
     resolver: yupResolver(schema),
   });
+
+  const cleanErrorState = () => {
+    dispatch({
+      type: ErrorActionTypes.CLEAR_ERRORS,
+    });
+  };
 
   useEffect(() => {
     if (auth.isAuthenticated) {
@@ -46,69 +53,70 @@ const Register = () => {
     }
   }, [auth, history]);
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
-
   const onSubmit = (data: RegisterUser) => {
     dispatch(registerUser(data, history));
-    reset();
   };
 
   return (
-    <div className="auth-container">
-      <BackButton text={"Back"} />
-      <p className="auth-title">Register</p>
-      <p>
-        Already have an account?{" "}
-        <Link
-          to="/login"
-          style={{ color: "#0080ff", textDecoration: "underline" }}
-        >
-          Login
-        </Link>
-      </p>
-      <form noValidate onSubmit={handleSubmit(onSubmit)}>
-        <p className="add-title">Name</p>
-        <input id="name" type="text" className="input" {...register("name")} />
-        <p className="error">{formErrors.name?.message}</p>
-        <p className="add-title">Email</p>
-        <input
-          id="email"
-          type="text"
-          className="input"
-          {...register("email")}
-        />
-        <p className="error">{formErrors.email?.message}</p>
-        <p className="error">{errors?.email}</p>
-        <p className="add-title">Password</p>
-        <input
-          id="password"
-          type="password"
-          autoComplete="true"
-          className="input"
-          {...register("password")}
-        />
-        <p className="error">{formErrors.password?.message}</p>
-        <p className="add-title">Confirm Password</p>
-        <input
-          id="password2"
-          type="password"
-          autoComplete="true"
-          className="input"
-          {...register("password2")}
-        />
-        {formErrors.password2?.message ? (
-          <p className="error">{formErrors.password2?.message}</p>
-        ) : null}
+    <div className="auth-page">
+      <div className="auth-container">
+        <BackButton text={"Back"} />
+        <p className="auth-title">Register</p>
+        <p>
+          Already have an account?{" "}
+          <Link
+            to="/login"
+            style={{ color: "#0080ff", textDecoration: "underline" }}
+            onClick={cleanErrorState}
+          >
+            Login
+          </Link>
+        </p>
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <p className="add-title">Name</p>
+          <input
+            id="name"
+            type="text"
+            className="input"
+            {...register("name")}
+          />
+          <p className="error">{formErrors.name?.message}</p>
+          <p className="add-title">Email</p>
+          <input
+            id="email"
+            type="text"
+            className="input"
+            {...register("email")}
+          />
+          <p className="error">{formErrors.email?.message}</p>
+          <p className="error">{errors?.email}</p>
+          <p className="add-title">Password</p>
+          <input
+            id="password"
+            type="password"
+            autoComplete="true"
+            className="input"
+            {...register("password")}
+          />
+          <p className="error">{formErrors.password?.message}</p>
+          <p className="add-title">Confirm Password</p>
+          <input
+            id="password2"
+            type="password"
+            autoComplete="true"
+            className="input"
+            {...register("password2")}
+          />
+          {formErrors.password2?.message ? (
+            <p className="error">{formErrors.password2?.message}</p>
+          ) : null}
 
-        <br />
-        <button type="submit" className="login-btn">
-          Register
-        </button>
-      </form>
+          <br />
+          <button type="submit" className="login-btn">
+            Register
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

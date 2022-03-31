@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import BackButton from "../../components/BackButton/BackButton";
+import { ErrorActionTypes } from "../../redux/actionTypes/error.actionTypes";
 
 const schema = yup.object().shape({
   email: yup.string().email("*Invalid email").required("*Email is required"),
@@ -36,15 +37,21 @@ const Login: React.FC = () => {
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { isSubmitSuccessful, errors: formErrors },
+    formState: { errors: formErrors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
   const onSubmit = (data: LoginUser) => {
-    dispatch(loginUser(data));
-    reset();
+    const formState = dispatch(loginUser(data));
+    console.log("formstate: ", formState);
+    console.log("User Loged in ");
+  };
+
+  const cleanErrorState = () => {
+    dispatch({
+      type: ErrorActionTypes.CLEAR_ERRORS,
+    });
   };
 
   useEffect(() => {
@@ -53,49 +60,46 @@ const Login: React.FC = () => {
     }
   }, [auth.isAuthenticated, history]);
 
-  useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
-
   return (
-    <div className="auth-container">
-      <BackButton text="Back" />
-      <p className="auth-title">Login</p>
-      <p>
-        Don't have an account?{" "}
-        <Link
-          to="/register"
-          style={{ color: "#0080ff", textDecoration: "underline" }}
-        >
-          Register
-        </Link>
-      </p>
-      <form noValidate onSubmit={handleSubmit(onSubmit)}>
-        <p className="add-title">Email</p>
-        <input
-          type="text"
-          id="email"
-          className="input"
-          {...register("email")}
-        />
-        <p className="error">{formErrors?.email?.message}</p>
-        <p className="error">{errors?.email}</p>
-        <p className="add-title">Password</p>
-        <input
-          id="password"
-          type="password"
-          className="input"
-          {...register("password")}
-        />
-        <p className="error">{formErrors?.password?.message}</p>
-        <p className="error">{errors?.password}</p>
+    <div className="auth-page">
+      <div className="auth-container">
+        <BackButton text="Back" />
+        <p className="auth-title">Login</p>
+        <p>
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            style={{ color: "#0080ff", textDecoration: "underline" }}
+            onClick={cleanErrorState}
+          >
+            Register
+          </Link>
+        </p>
+        <form noValidate onSubmit={handleSubmit(onSubmit)}>
+          <p className="add-title">Email</p>
+          <input
+            type="text"
+            id="email"
+            className="input"
+            {...register("email")}
+          />
+          <p className="error">{formErrors?.email?.message}</p>
+          <p className="error">{errors?.email}</p>
+          <p className="add-title">Password</p>
+          <input
+            id="password"
+            type="password"
+            className="input"
+            {...register("password")}
+          />
+          <p className="error">{formErrors?.password?.message}</p>
+          <p className="error">{errors?.password}</p>
 
-        <button type="submit" className="login-btn">
-          Login
-        </button>
-      </form>
+          <button type="submit" className="login-btn">
+            Login
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

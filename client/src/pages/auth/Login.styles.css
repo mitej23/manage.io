@@ -1,3 +1,10 @@
+.auth-page {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  background-color: #f8fafc;
+}
+
 .auth-container {
   display: flex;
   flex-direction: column;
@@ -7,8 +14,8 @@
   padding-right: 4.5rem;
   border-radius: 10px;
   border: var(--border);
-  box-shadow: var(--shadow);
-
+  box-shadow: var(--auth-shadow);
+  background-color: #fff;
   position: absolute;
   top: 0;
   bottom: 0;

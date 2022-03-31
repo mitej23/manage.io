@@ -51,7 +51,8 @@ input:focus {
 .error {
   color: red;
   font-size: 0.8rem;
-  margin-top: 0.3rem;
+  margin-top: 0.75rem;
+  margin-left: 0.5rem;
 }
 
 .add-client-btn:hover {

@@ -9,6 +9,7 @@
   --bg-main: #f6f6fb;
   --primary-purple: #7166f9;
   --main-blue: #94bcf8;
+  --auth-shadow: 0 4px 6px 0 rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
   --shadow: 0 4px 6px 0 var(--bg-main), 0 2px 4px -2px var(--bg-main);
   --shadow-small: 0 2px 3px 0 var(--bg-main), 0 1px 2px -1px var(--bg-main);
 }
